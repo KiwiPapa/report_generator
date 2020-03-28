@@ -895,7 +895,7 @@ if formation_be_or_not == '有储层':
 # print(all_evaluation_of_formation)
 ################################################################################
 # 基于文本替换方案的文档生成
-TEMPLATE_PATH = ".\\.resources\\模板报告"
+TEMPLATE_PATH = ".\\resources\\模板报告"
 PATH = "."
 
 DICT = {
@@ -1685,7 +1685,7 @@ else:
 time.sleep(0.5)
 ################################################################################
 # 签名
-PATH = '.\\.resources\\签名图片\\'
+PATH = '.\\resources\\签名图片\\'
 # report_Writer = input('请选择报告编写人：1李海军 2陈海祥 3朱莉 4何强 5杨艺 6涂国兰 7王昌德\n')
 choicess_list = ["李海军","陈海祥","朱莉","何强","杨艺","涂国兰","王昌德"]
 report_Writer = gui.choicebox(msg='请选择报告编写人',choices=choicess_list)
@@ -1722,7 +1722,7 @@ print('【报告】生成完毕')
 # 生成报表
 generate_table_or_not = gui.indexbox(msg="是否生成报表？", title="提示", choices=("是的", "不用"))
 if generate_table_or_not == 0:
-    PATH = '.\\.resources\\报表模板\\'
+    PATH = '.\\resources\\报表模板\\'
     wb = openpyxl.load_workbook(PATH + '2020年固井质量统计表样板.xlsx')
     sheet = wb[wb.sheetnames[0]]
     sheet['B5'] = client_Name
