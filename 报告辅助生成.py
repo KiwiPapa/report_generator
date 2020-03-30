@@ -14,7 +14,6 @@ from docx.oxml.ns import qn
 from docx.shared import Cm, Inches, Pt, RGBColor
 from pandas import Series
 
-
 # 转换文件，有问题，目前采用wps手动转换方法
 # import win32com.client as wc
 # word = wc.Dispatch("Word.Application")
