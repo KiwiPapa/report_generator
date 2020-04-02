@@ -1910,7 +1910,7 @@ elif report_Writer == '王昌德':
     add1.add_run().add_picture(PATH + '签名-王昌德.jpg', width=Inches(1.0))
 # report_Supervisor = input('请选择报告审核人：1刘恒 2王参文 3刘静 4朱莉\n')
 choicess_list = ["刘恒","王参文","刘静","朱莉"]
-report_Supervisor = gui.choicebox(msg='请选择报告编写人',choices=choicess_list)
+report_Supervisor = gui.choicebox(msg='请选择报告审核人',choices=choicess_list)
 add2 = document.tables[0].cell(1, 1).paragraphs[0]
 if report_Supervisor == '刘恒':
     add2.add_run().add_picture(PATH + '签名-刘恒.jpg', width=Inches(1.0))
