@@ -62,7 +62,7 @@ def get_filePath_fileName_fileExt(filename):
     return filepath, shotname, extension
 
 # 文档替换主程序
-def document_rapalce():
+def document_replace():
     global well_Tag
     newFile = PATH + "\\" + well_Name + '_' + year + month + \
               day + '_(' + casing_Goal + 'mm套,' + process_Section + 'm)固井报告' + '.docx'
@@ -72,15 +72,20 @@ def document_rapalce():
             if fetch_or_not == 0:
                 document = Document(TEMPLATE_PATH + '\\template-with-formation-weiyuan.docx')
                 well_Tag = 'weiyuan-with-formation'
+            elif fetch_or_not == 1:
+                document = Document(TEMPLATE_PATH + '\\template-with-formation.docx')
+                well_Tag = 'normal-well-with-formation'
         elif '宁' in well_Name:
             fetch_or_not = gui.indexbox(msg="是否调取长宁完井声幅报告模板（含储层）？", title="提示", choices=("调取", "不调取"))
             if fetch_or_not == 0:
                 document = Document(TEMPLATE_PATH + '\\template-with-formation-changning.docx')
                 well_Tag = 'changning-with-formation'
+            elif fetch_or_not == 1:
+                document = Document(TEMPLATE_PATH + '\\template-with-formation.docx')
+                well_Tag = 'normal-well-with-formation'
         else:
             document = Document(TEMPLATE_PATH + '\\template-with-formation.docx')
             well_Tag = 'normal-well-with-formation'
-        print('well_Tag = ', well_Tag)
     else:
         if '威' in well_Name:
             fetch_or_not = gui.indexbox(msg="是否调取威远声幅报告模板（不含储层）？", title="提示", choices=("调取", "不调取"))
@@ -99,9 +104,8 @@ def document_rapalce():
                 document = Document(TEMPLATE_PATH + '\\template-without-formation.docx')#和常规无储层的模板一致
                 well_Tag = 'normal-well-without-formation'
         else:
-            document = Document(TEMPLATE_PATH + '\\template-without-formation-changning.docx')
+            document = Document(TEMPLATE_PATH + '\\template-without-formation.docx')
             well_Tag = 'normal-well-without-formation'
-    print('well_Tag = ', well_Tag)
     document = check(document)
     # 全文档表格内容居中
     for table in document.tables:
@@ -114,6 +118,7 @@ def document_rapalce():
     document.save(newFile)
 
 def check(document):
+    print('well_Tag==', well_Tag)
     # tables
     for table in document.tables:
         for row in range(len(table.rows)):
@@ -145,7 +150,7 @@ PATH = ".\\1原始资料"
 for fileName in os.listdir(PATH):
     fileDir = PATH + "\\" + fileName
     document = Document(fileDir)
-
+'''
 # 打印所有段落
 print('一共有', str(len(document.paragraphs) - 1), '个文本段落。')
 count = 0
@@ -164,72 +169,116 @@ for table in document.tables:
         for col in range(len(table.columns)):
             # table.cell(row, col).text += '({0},{1})'.format(row, col)#给文本中的单元格添加表格坐标
             print('(', str(row), ',', str(col), '):', table.cell(row, col).text)
-
+'''
 ################################################################################
 # 提取关键参数
-well_Name_Raw = document.tables[0].cell(1, 1).text
+well_Name_Raw = document.tables[0].cell(1, 2).text
 well_Name = well_Name_Raw.split('井')
 well_Name = well_Name[0]
 
-well_Type = document.tables[0].cell(3, 1).text  # 井型
-drilling_Unit = document.tables[0].cell(12, 1).text  # 钻井单位
+well_Type = document.tables[0].cell(3, 2).text  # 井型
+drilling_Unit = document.tables[0].cell(15, 2).text  # 钻井单位
 
-bit1_Diameter = document.tables[0].cell(17, 1).text.strip()
+bit1_Diameter = document.tables[0].cell(20, 2).text.strip()
 bit1_Diameter = bit1_Diameter.replace(' ', '')
 bit1_Diameter = bit1_Diameter.split('mm')
 bit1_Diameter = bit1_Diameter[0]
-bit1_Depth = document.tables[0].cell(17, 3).text.strip()
+bit1_Depth = document.tables[0].cell(20, 5).text.strip()
 bit1_Depth = bit1_Depth.replace(' ', '')
 bit1_Depth = bit1_Depth.split('m')
 bit1_Depth = bit1_Depth[0]
 
-bit2_Diameter = document.tables[0].cell(18, 1).text.strip()
+bit2_Diameter = document.tables[0].cell(21, 2).text.strip()
 bit2_Diameter = bit2_Diameter.replace(' ', '')
 bit2_Diameter = bit2_Diameter.split('mm')
 bit2_Diameter = bit2_Diameter[0]
-bit2_Depth = document.tables[0].cell(18, 3).text.strip()
+bit2_Depth = document.tables[0].cell(21, 5).text.strip()
 bit2_Depth = bit2_Depth.replace(' ', '')
 bit2_Depth = bit2_Depth.split('m')
 bit2_Depth = bit2_Depth[0]
 
-bit3_Diameter = document.tables[0].cell(19, 1).text.strip()
+bit3_Diameter = document.tables[0].cell(22, 2).text.strip()
 bit3_Diameter = bit3_Diameter.replace(' ', '')
 bit3_Diameter = bit3_Diameter.split('mm')
 bit3_Diameter = bit3_Diameter[0]
-bit3_Depth = document.tables[0].cell(19, 3).text.strip()
+bit3_Depth = document.tables[0].cell(22, 5).text.strip()
 bit3_Depth = bit3_Depth.replace(' ', '')
 bit3_Depth = bit3_Depth.split('m')
 bit3_Depth = bit3_Depth[0]
 
-bit4_Diameter = document.tables[0].cell(20, 1).text.strip()
+bit4_Diameter = document.tables[0].cell(23, 2).text.strip()
 bit4_Diameter = bit4_Diameter.replace(' ', '')
 bit4_Diameter = bit4_Diameter.split('mm')
 bit4_Diameter = bit4_Diameter[0]
-bit4_Depth = document.tables[0].cell(20, 3).text.strip()
+bit4_Depth = document.tables[0].cell(23, 5).text.strip()
 bit4_Depth = bit4_Depth.replace(' ', '')
 bit4_Depth = bit4_Depth.split('m')
 bit4_Depth = bit4_Depth[0]
 
-bit5_Diameter = document.tables[0].cell(21, 1).text.strip()
+bit5_Diameter = document.tables[0].cell(24, 2).text.strip()
 bit5_Diameter = bit5_Diameter.replace(' ', '')
 bit5_Diameter = bit5_Diameter.split('mm')
 bit5_Diameter = bit5_Diameter[0]
-bit5_Depth = document.tables[0].cell(21, 3).text.strip()
+bit5_Depth = document.tables[0].cell(24, 5).text.strip()
 bit5_Depth = bit5_Depth.replace(' ', '')
 bit5_Depth = bit5_Depth.split('m')
 bit5_Depth = bit5_Depth[0]
 
-bit6_Diameter = document.tables[0].cell(22, 1).text.strip()
+bit6_Diameter = document.tables[0].cell(25, 2).text.strip()
 bit6_Diameter = bit6_Diameter.replace(' ', '')
 bit6_Diameter = bit6_Diameter.split('mm')
 bit6_Diameter = bit6_Diameter[0]
-bit6_Depth = document.tables[0].cell(22, 3).text.strip()
+bit6_Depth = document.tables[0].cell(25, 5).text.strip()
 bit6_Depth = bit6_Depth.replace(' ', '')
 bit6_Depth = bit6_Depth.split('m')
 bit6_Depth = bit6_Depth[0]
 
+bit7_Diameter = document.tables[0].cell(26, 2).text.strip()
+bit7_Diameter = bit7_Diameter.replace(' ', '')
+bit7_Diameter = bit7_Diameter.split('mm')
+bit7_Diameter = bit7_Diameter[0]
+bit7_Depth = document.tables[0].cell(26, 5).text.strip()
+bit7_Depth = bit7_Depth.replace(' ', '')
+bit7_Depth = bit7_Depth.split('m')
+bit7_Depth = bit7_Depth[0]
+
+bit8_Diameter = document.tables[0].cell(27, 2).text.strip()
+bit8_Diameter = bit8_Diameter.replace(' ', '')
+bit8_Diameter = bit8_Diameter.split('mm')
+bit8_Diameter = bit8_Diameter[0]
+bit8_Depth = document.tables[0].cell(27, 5).text.strip()
+bit8_Depth = bit8_Depth.replace(' ', '')
+bit8_Depth = bit8_Depth.split('m')
+bit8_Depth = bit8_Depth[0]
+
+bit9_Diameter = document.tables[0].cell(28, 2).text.strip()
+bit9_Diameter = bit9_Diameter.replace(' ', '')
+bit9_Diameter = bit9_Diameter.split('mm')
+bit9_Diameter = bit9_Diameter[0]
+bit9_Depth = document.tables[0].cell(28, 5).text.strip()
+bit9_Depth = bit9_Depth.replace(' ', '')
+bit9_Depth = bit9_Depth.split('m')
+bit9_Depth = bit9_Depth[0]
+
+bit10_Diameter = document.tables[0].cell(29, 2).text.strip()
+bit10_Diameter = bit10_Diameter.replace(' ', '')
+bit10_Diameter = bit10_Diameter.split('mm')
+bit10_Diameter = bit10_Diameter[0]
+bit10_Depth = document.tables[0].cell(29, 5).text.strip()
+bit10_Depth = bit10_Depth.replace(' ', '')
+bit10_Depth = bit10_Depth.split('m')
+bit10_Depth = bit10_Depth[0]
+
 # 找出最深的钻头深度deepest_bit
-if bit6_Depth != '':
+if bit10_Depth != '':
+    deepest_bit = bit10_Depth
+elif bit9_Depth != '':
+    deepest_bit = bit9_Depth
+elif bit8_Depth != '':
+    deepest_bit = bit8_Depth
+elif bit7_Depth != '':
+    deepest_bit = bit7_Depth
+elif bit6_Depth != '':
     deepest_bit = bit6_Depth
 elif bit5_Depth != '':
     deepest_bit = bit5_Depth
@@ -243,7 +292,7 @@ elif bit1_Depth != '':
     deepest_bit = bit1_Depth
 
 # 地理位置geo_Position
-geographic_Position = document.tables[0].cell(23, 1).text.strip()
+geographic_Position = document.tables[0].cell(30, 2).text.strip()
 if '省' in geographic_Position:
     geographic_Position = geographic_Position.split('省')
     geographic_Position1 = ''.join([geographic_Position[0], '省'])
@@ -264,7 +313,7 @@ elif '省' not in geographic_Position:
 geo_Position = ''.join([geographic_Position1, geographic_Position2])
 
 # 构造位置stru_Position
-structure_Position = document.tables[0].cell(24, 1).text
+structure_Position = document.tables[0].cell(31, 2).text
 structure_Position = structure_Position.replace(' ', '')
 structure_Position = structure_Position.replace('四川盆地', '')
 structure_Position = structure_Position.split('构造')
@@ -277,13 +326,16 @@ elif '威远' in stru_Position:
     stru_Position = '威远'
 
 # 钻井液flu_Property, flu_Density, flu_Viscosity
-flu_Property = document.tables[1].cell(8, 2).text.strip()
+flu_Property = document.tables[1].cell(9, 2).text.strip()
+flu_Property = flu_Property.replace(' ', '')
 
-drilling_Fluid_Density = document.tables[1].cell(9, 2).text.strip()
+drilling_Fluid_Density = document.tables[1].cell(10, 2).text.strip()
+drilling_Fluid_Density = drilling_Fluid_Density.replace(' ', '')
 drilling_Fluid_Density = drilling_Fluid_Density.split('g')
 flu_Density = drilling_Fluid_Density[0]
 
-drilling_Fluid_Viscosity = document.tables[1].cell(10, 2).text.strip()
+drilling_Fluid_Viscosity = document.tables[1].cell(11, 2).text.strip()
+drilling_Fluid_Viscosity = drilling_Fluid_Viscosity.replace(' ', '')
 if 's' in drilling_Fluid_Viscosity:
     drilling_Fluid_Viscosity = drilling_Fluid_Viscosity.split('s')
 elif 'S' in drilling_Fluid_Viscosity:
@@ -293,20 +345,20 @@ elif '秒' in drilling_Fluid_Viscosity:
 flu_Viscosity = drilling_Fluid_Viscosity[0]
 
 # 测井装备
-logging_Equipment = document.tables[1].cell(12, 1).text.strip()
+logging_Equipment = document.tables[1].cell(13, 1).text.strip()
 # 测井小队
 logging_Group = document.tables[1].cell(14, 1).text.strip()
 # 小队长
 logging_Leader = document.tables[1].cell(15, 1).text.strip()
 
 # 时间cement_End_Time, logging_Start_Time, logging_End_Time
-cement_End_Time = document.tables[1].cell(19, 1).text.strip()
+cement_End_Time = document.tables[1].cell(14, 4).text.strip()
 cement_End_Time = cement_End_Time[0:10]
 
-logging_Start_Time = document.tables[1].cell(20, 1).text.strip()
+logging_Start_Time = document.tables[1].cell(15, 4).text.strip()
 logging_Start_Time = logging_Start_Time[0:10]
 
-logging_End_Time = document.tables[1].cell(21, 1).text.strip()
+logging_End_Time = document.tables[1].cell(16, 4).text.strip()
 log_End_Time = logging_End_Time[0:10]
 
 year = logging_End_Time[0:4]
@@ -344,6 +396,7 @@ cement_Quantity = cement_Quantity.replace('T', '')
 cement_Quantity = cement_Quantity.replace('t', '')
 
 # 水泥密度cement_Density
+cement_Density = ''
 slow_Cement_Density = document.tables[2].cell(7, 7).text.strip()
 fast_Cement_Density = document.tables[2].cell(8, 7).text.strip()
 if slow_Cement_Density == '':
@@ -356,6 +409,9 @@ elif eval(str(slow_Cement_Density)) > eval(str(fast_Cement_Density)):
     cement_Density = ''.join([fast_Cement_Density, '~', slow_Cement_Density])
 elif eval(str(slow_Cement_Density)) < eval(str(fast_Cement_Density)):
     cement_Density = ''.join([slow_Cement_Density, '~', fast_Cement_Density])
+other_Cement_Density = document.tables[2].cell(9, 7).text.strip()
+if other_Cement_Density != '' and cement_Density == '':
+    cement_Density = other_Cement_Density
 
 # 水泥设计返高design_Depth
 design_Depth = document.tables[2].cell(5, 2).text.strip()
@@ -370,6 +426,11 @@ else:
 actual_Depth = document.tables[2].cell(5, 7).text.strip()
 actual_Depth = actual_Depth.replace(' ', '')
 actual_Depth = actual_Depth.replace('m', '')
+actual_Depth = actual_Depth.replace('以上', '')
+actual_Depth = actual_Depth.replace('（', '')
+actual_Depth = actual_Depth.replace('）', '')
+actual_Depth = actual_Depth.replace('(', '')
+actual_Depth = actual_Depth.replace(')', '')
 if '.' in actual_Depth:
     actual_Depth = actual_Depth
 else:
@@ -385,34 +446,113 @@ casing3_Dia = document.tables[2].cell(17, 3).text.strip()
 casing4_Dia = document.tables[2].cell(18, 3).text.strip()
 casing5_Dia = document.tables[2].cell(19, 3).text.strip()
 casing6_Dia = document.tables[2].cell(20, 3).text.strip()
+casing7_Dia = document.tables[2].cell(21, 3).text.strip()
+casing8_Dia = document.tables[2].cell(22, 3).text.strip()
+casing9_Dia = document.tables[2].cell(23, 3).text.strip()
+casing10_Dia = document.tables[2].cell(24, 3).text.strip()
+casing11_Dia = document.tables[2].cell(25, 3).text.strip()
+casing12_Dia = document.tables[2].cell(26, 3).text.strip()
 
+#避免套管下深井段为单数字而不为井段
 casing1_interval = document.tables[2].cell(15, 6).text.strip()
+casing1_interval = casing1_interval.replace(' ', '')
+casing1_interval = casing1_interval.replace('～', '-')
+casing1_interval = casing1_interval.replace('~', '-')
 if '~' not in casing1_interval and '～' not in casing1_interval and \
         '-' not in casing1_interval and casing1_interval != '':
     casing1_interval = ''.join(['0', '~', casing1_interval])
 casing2_interval = document.tables[2].cell(16, 6).text.strip()
+casing2_interval = casing2_interval.replace(' ', '')
+casing2_interval = casing2_interval.replace('～', '-')
+casing2_interval = casing2_interval.replace('~', '-')
 if '~' not in casing2_interval and '～' not in casing2_interval and \
         '-' not in casing2_interval and casing2_interval != '':
     casing2_interval = ''.join(['0', '~', casing2_interval])
 casing3_interval = document.tables[2].cell(17, 6).text.strip()
+casing3_interval = casing3_interval.replace(' ', '')
+casing3_interval = casing3_interval.replace('～', '-')
+casing3_interval = casing3_interval.replace('~', '-')
 if '~' not in casing3_interval and '～' not in casing3_interval and \
         '-' not in casing3_interval and casing3_interval != '':
     casing3_interval = ''.join(['0', '~', casing3_interval])
 casing4_interval = document.tables[2].cell(18, 6).text.strip()
+casing4_interval = casing4_interval.replace(' ', '')
+casing4_interval = casing4_interval.replace('～', '-')
+casing4_interval = casing4_interval.replace('~', '-')
 if '~' not in casing4_interval and '～' not in casing4_interval and \
         '-' not in casing4_interval and casing4_interval != '':
     casing4_interval = ''.join(['0', '~', casing4_interval])
 casing5_interval = document.tables[2].cell(19, 6).text.strip()
+casing5_interval = casing5_interval.replace(' ', '')
+casing5_interval = casing5_interval.replace('～', '-')
+casing5_interval = casing5_interval.replace('~', '-')
 if '~' not in casing5_interval and '～' not in casing5_interval and \
         '-' not in casing5_interval and casing5_interval != '':
     casing5_interval = ''.join(['0', '~', casing5_interval])
 casing6_interval = document.tables[2].cell(20, 6).text.strip()
+casing6_interval = casing6_interval.replace(' ', '')
+casing6_interval = casing6_interval.replace('～', '-')
+casing6_interval = casing6_interval.replace('~', '-')
 if '~' not in casing6_interval and '～' not in casing6_interval and \
         '-' not in casing6_interval and casing6_interval != '':
     casing6_interval = ''.join(['0', '~', casing6_interval])
+casing7_interval = document.tables[2].cell(21, 6).text.strip()
+casing7_interval = casing7_interval.replace(' ', '')
+casing7_interval = casing7_interval.replace('～', '-')
+casing7_interval = casing7_interval.replace('~', '-')
+if '~' not in casing7_interval and '～' not in casing7_interval and \
+        '-' not in casing7_interval and casing7_interval != '':
+    casing7_interval = ''.join(['0', '~', casing7_interval])
+casing8_interval = document.tables[2].cell(22, 6).text.strip()
+casing8_interval = casing8_interval.replace(' ', '')
+casing8_interval = casing8_interval.replace('～', '-')
+casing8_interval = casing8_interval.replace('~', '-')
+if '~' not in casing8_interval and '～' not in casing8_interval and \
+        '-' not in casing8_interval and casing8_interval != '':
+    casing8_interval = ''.join(['0', '~', casing8_interval])
+casing9_interval = document.tables[2].cell(23, 6).text.strip()
+casing9_interval = casing9_interval.replace(' ', '')
+casing9_interval = casing9_interval.replace('～', '-')
+casing9_interval = casing9_interval.replace('~', '-')
+if '~' not in casing9_interval and '～' not in casing9_interval and \
+        '-' not in casing9_interval and casing9_interval != '':
+    casing9_interval = ''.join(['0', '~', casing9_interval])
+casing10_interval = document.tables[2].cell(24, 6).text.strip()
+casing10_interval = casing10_interval.replace(' ', '')
+casing10_interval = casing10_interval.replace('～', '-')
+casing10_interval = casing10_interval.replace('~', '-')
+if '~' not in casing10_interval and '～' not in casing10_interval and \
+        '-' not in casing10_interval and casing10_interval != '':
+    casing10_interval = ''.join(['0', '~', casing10_interval])
+casing11_interval = document.tables[2].cell(25, 6).text.strip()
+casing11_interval = casing11_interval.replace(' ', '')
+casing11_interval = casing11_interval.replace('～', '-')
+casing11_interval = casing11_interval.replace('~', '-')
+if '~' not in casing11_interval and '～' not in casing11_interval and \
+        '-' not in casing11_interval and casing11_interval != '':
+    casing11_interval = ''.join(['0', '~', casing11_interval])
+casing12_interval = document.tables[2].cell(26, 6).text.strip()
+casing12_interval = casing12_interval.replace(' ', '')
+casing12_interval = casing12_interval.replace('～', '-')
+casing12_interval = casing12_interval.replace('~', '-')
+if '~' not in casing12_interval and '～' not in casing12_interval and \
+        '-' not in casing12_interval and casing12_interval != '':
+    casing12_interval = ''.join(['0', '~', casing12_interval])
 
 # 目标套管尺寸casing_Goal
-if casing6_Dia != '':
+if casing12_Dia != '':
+    casing_Goal = casing12_Dia
+elif casing11_Dia != '':
+    casing_Goal = casing11_Dia
+elif casing10_Dia != '':
+    casing_Goal = casing10_Dia
+elif casing9_Dia != '':
+    casing_Goal = casing9_Dia
+elif casing8_Dia != '':
+    casing_Goal = casing8_Dia
+elif casing7_Dia != '':
+    casing_Goal = casing7_Dia
+elif casing6_Dia != '':
     casing_Goal = casing6_Dia
 elif casing5_Dia != '':
     casing_Goal = casing5_Dia
@@ -426,7 +566,61 @@ elif casing1_Dia != '':
     casing_Goal = casing1_Dia
 
 # 目标套管下深casing_Goal_Depth
-if casing6_Dia == casing_Goal:
+if casing12_Dia == casing_Goal:
+    if '～' in document.tables[2].cell(26, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(26, 6).text.strip().split('～')[1]
+    elif '~' in document.tables[2].cell(26, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(26, 6).text.strip().split('~')[1]
+    elif '-' in document.tables[2].cell(26, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(26, 6).text.strip().split('-')[1]
+    elif '-' not in document.tables[2].cell(26, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(26, 6).text.strip()
+elif casing11_Dia == casing_Goal:
+    if '～' in document.tables[2].cell(25, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(25, 6).text.strip().split('～')[1]
+    elif '~' in document.tables[2].cell(25, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(25, 6).text.strip().split('~')[1]
+    elif '-' in document.tables[2].cell(25, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(25, 6).text.strip().split('-')[1]
+    elif '-' not in document.tables[2].cell(25, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(25, 6).text.strip()
+elif casing10_Dia == casing_Goal:
+    if '～' in document.tables[2].cell(24, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(24, 6).text.strip().split('～')[1]
+    elif '~' in document.tables[2].cell(24, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(24, 6).text.strip().split('~')[1]
+    elif '-' in document.tables[2].cell(24, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(24, 6).text.strip().split('-')[1]
+    elif '-' not in document.tables[2].cell(24, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(24, 6).text.strip()
+elif casing9_Dia == casing_Goal:
+    if '～' in document.tables[2].cell(23, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(23, 6).text.strip().split('～')[1]
+    elif '~' in document.tables[2].cell(23, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(23, 6).text.strip().split('~')[1]
+    elif '-' in document.tables[2].cell(23, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(23, 6).text.strip().split('-')[1]
+    elif '-' not in document.tables[2].cell(23, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(23, 6).text.strip()
+elif casing8_Dia == casing_Goal:
+    if '～' in document.tables[2].cell(22, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(22, 6).text.strip().split('～')[1]
+    elif '~' in document.tables[2].cell(22, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(22, 6).text.strip().split('~')[1]
+    elif '-' in document.tables[2].cell(22, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(22, 6).text.strip().split('-')[1]
+    elif '-' not in document.tables[2].cell(22, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(22, 6).text.strip()
+elif casing7_Dia == casing_Goal:
+    if '～' in document.tables[2].cell(21, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(21, 6).text.strip().split('～')[1]
+    elif '~' in document.tables[2].cell(21, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(21, 6).text.strip().split('~')[1]
+    elif '-' in document.tables[2].cell(21, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(21, 6).text.strip().split('-')[1]
+    elif '-' not in document.tables[2].cell(21, 6).text.strip():
+        casing_Goal_Depth = document.tables[2].cell(21, 6).text.strip()
+elif casing6_Dia == casing_Goal:
     if '～' in document.tables[2].cell(20, 6).text.strip():
         casing_Goal_Depth = document.tables[2].cell(20, 6).text.strip().split('～')[1]
     elif '~' in document.tables[2].cell(20, 6).text.strip():
@@ -482,9 +676,12 @@ elif casing1_Dia == casing_Goal:
         casing_Goal_Depth = document.tables[2].cell(15, 6).text.strip()
 
 # 获取测量井段
-measure_Interval = document.tables[3].cell(3, 6).text.strip()
-measure_Interval = measure_Interval.replace('~', '-')
-measure_Interval = measure_Interval.replace('～', '-')
+for row in range(3, 26):
+    if document.tables[3].cell(row, 5).text.strip() != '':
+        measure_Interval = document.tables[3].cell(row, 5).text.strip()
+        measure_Interval = measure_Interval.replace('~', '-')
+        measure_Interval = measure_Interval.replace('～', '-')
+        pass
 
 # 判断甲方是谁
 if len(document.tables) ==9:
@@ -539,39 +736,47 @@ time.sleep(0.5)
 check_or_not = gui.indexbox(msg="是否进行【原始资料收集登记表】完整性检查？",title="提示",choices=("检查","不检查"))
 
 DICT_CHECK = {
-    "well_Name": well_Name,
-    "stru_Position": stru_Position,
-    "casing_Goal": casing_Goal,
-    "geo_Position": geo_Position,
-    "deepest_bit": deepest_bit,
-    "arti_Bottom": arti_Bottom,
-    "dev_Depth_Ratio": dev_Depth_Ratio,
-    "casing1_Dia": casing1_Dia,
-    "bit1_Diameter": bit1_Diameter,
-    "flu_Property": flu_Property,
-    "flu_Density": flu_Density,
-    "flu_Viscosity": flu_Viscosity,
-    "cement_Density": cement_Density,
-    "cement_Quantity": cement_Quantity,
-    "design_Depth": design_Depth,
-    "cement_End_Time": cement_End_Time,
-    "log_End_Time": log_End_Time,
-    "logging_Group": logging_Group,
-    "logging_Leader": logging_Leader,
-    "logging_Equipment": logging_Equipment,
-    "actual_Depth": actual_Depth,
-    "year": year,
-    "month": month,
-    "casing1_interval": casing1_interval,
-    "bit1_Depth": bit1_Depth,
+    "井名": well_Name,
+    "构造位置": stru_Position,
+    "目标套管": casing_Goal,
+    "测量井段": measure_Interval,
+    "地理位置": geo_Position,
+    "人工井底": arti_Bottom,
+    "最大井斜深度": dev_Depth_Ratio,
+    "套管1内径": casing1_Dia,
+    "钻头1直径": bit1_Diameter,
+    "流体性质": flu_Property,
+    "流体密度": flu_Density,
+    "流体粘度": flu_Viscosity,
+    "水泥密度": cement_Density,
+    "水泥量": cement_Quantity,
+    "水泥设计返高": design_Depth,
+    "固井结束时间": cement_End_Time,
+    "测井结束时间": log_End_Time,
+    "测井小队": logging_Group,
+    "小队长": logging_Leader,
+    "测井系列": logging_Equipment,
+    "水泥实际返高": actual_Depth,
+    "年": year,
+    "月": month,
+    "套管1井段": casing1_interval,
+    "钻头1深度": bit1_Depth
 }
 
+remind = []
 if check_or_not == 0:
     for k, v in DICT_CHECK.items():
         if v == '':
-            print('请注意:', k, '== [空值]')
+            temp_str = ''.join(['请注意:', k, '没有填写\n'])
+            remind.append(temp_str)
+    if remind != '':
+        remind.append('水泥返高若不填写可能会报错。')
+        remind = ''.join(remind)
+        gui.msgbox(msg=remind,title="提示")
+    else:
+        remind = '原始资料登记卡填写完整:)'
+        gui.msgbox(msg=remind, title="提示")
     print('完整性检查完毕')
-    gui.msgbox('完整性检查完毕，请查看控制台窗口', '继续吗？')
 
 print('【原始资料收集登记表】解析完成')
 
@@ -963,7 +1168,7 @@ DICT = {
 }
 
 print('模板替换开始，请等待...')
-document_rapalce()#模板替换主程序
+document_replace()#模板替换主程序
 print('【模板替换】完成')
 time.sleep(0.5)
 print('储层表添加中，请等待...')
@@ -1053,7 +1258,7 @@ for row in range(len(table.rows)):
         table.cell(row, col).text = str(sheet.cell_value(row, col))
 
 # set_or_not = input('\n是否进行表格自动格式调整(耗时约1~3分钟)？\n【自动调整】请按【1】,【手动更改】请按【其它任意键】')
-set_or_not = gui.indexbox(msg="是否进行表格自动格式调整(耗时约1~3分钟)？",title="提示",choices=("自动调整","手动调整"))
+set_or_not = gui.indexbox(msg="是否进行表格自动格式调整(耗时约1-3分钟)？",title="提示",choices=("自动调整","手动调整"))
 if set_or_not == 0:
     # 合并单元格
     print('\n单层统计表合并单元格并居中...')
@@ -1212,7 +1417,7 @@ if formation_be_or_not == '有储层':
         calculation_Start = float(calculation_Start)
         calculation_End = formation_pic_DataFrame.loc[pic_number, '第一个储层start']
         calculation_End = float(calculation_End)
-        print('----------------第', pic_number + 1, '个层内的井段----------------')
+        print('----------------第', pic_number + 1, '个储层上部井段----------------')
         if (calculation_End <= float(end_Evaluation)) & (calculation_Start >= float(start_Evaluation)):
             df_temp = df1.loc[(df1['井段Start'] >= calculation_Start) & (df1['井段Start'] <= calculation_End), :]
             # 获取储层起始深度到第一层井段底界的结论
@@ -1456,12 +1661,12 @@ if formation_be_or_not == '有储层':
                     case_Wave_Energy = '较强到较弱'
                     formation_Wave_Energy = '较弱到较强'
             else:
-                all_evaluation_of_formation.append('[因储层范围超出测量边界，待确定]')
+                all_evaluation_of_formation.append('[储层范围超出测量边界，待确定]')
 
-            if all_evaluation_of_formation[formation_Number_Temp - 1] == '[因储层范围超出测量边界，待确定]':
-                cbl_value = '[待确定]'
-                case_Wave_Energy = '[待确定]'
-                formation_Wave_Energy = '[待确定]'
+            if all_evaluation_of_formation[formation_Number_Temp - 1] == '[储层范围超出测量边界，待确定]':
+                cbl_value = '[储层范围超出测量边界，待确定]'
+                case_Wave_Energy = '[储层范围超出测量边界，待确定]'
+                formation_Wave_Energy = '[储层范围超出测量边界，待确定]'
             r = p.add_run(str(formation_Number_Temp) + '#储层声幅')
             # r.bold = True
             r.font.name = 'Times New Roman'
@@ -1678,7 +1883,7 @@ time.sleep(0.5)
 ################################################################################
 # 100%检查
 if round((float(good_Ratio) + float(median_Ratio) + float(bad_Ratio)), 1) != 100.0:
-    print('固井质量统计比例相加不等于100.0%，请仔细确认')
+    input('固井质量统计比例相加不等于100.0%，请仔细确认')
 else:
     print('固井质量统计比例相加等于100.0%，检查完毕')
 time.sleep(0.5)
