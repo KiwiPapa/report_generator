@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Python_learning_codes/.idea/Python_learning_codes.iml" filepath="$PROJECT_DIR$/../Python_learning_codes/.idea/Python_learning_codes.iml" />
       <module fileurl="file://$PROJECT_DIR$/../Python_test/.idea/Python_test.iml" filepath="$PROJECT_DIR$/../Python_test/.idea/Python_test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/report_generator.iml" filepath="$PROJECT_DIR$/.idea/report_generator.iml" />
     </modules>
