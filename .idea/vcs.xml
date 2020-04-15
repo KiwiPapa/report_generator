@@ -2,8 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../Python_learning_codes" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/resources/回收站/固井质量报告生成程序20200402/回收站/固井质量报告生成程序(20200401)" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/回收站/固井质量报告生成程序(20200401)" vcs="Git" />
   </component>
 </project>

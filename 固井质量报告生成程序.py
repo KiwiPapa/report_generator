@@ -14,6 +14,8 @@ from docx.oxml.ns import qn
 from docx.shared import Cm, Inches, Pt, RGBColor
 from pandas import Series
 
+from changeOffice import Change
+
 # 转换文件，有问题，目前采用wps手动转换方法
 # import win32com.client as wc
 # word = wc.Dispatch("Word.Application")
@@ -23,6 +25,20 @@ from pandas import Series
 # False, False, False)  # 转换后的文件
 # doc.Close
 # word.Quit
+
+#转换文件，可能转出的文件读写空值，那么还得利用WPS或者LIBRE OFFICE
+c = Change("./1原始文件")
+c.doc2docx()
+c.xls2xlsx()
+c = Change("./2统计表")
+c.doc2docx()
+c.xls2xlsx()
+c = Change("./3单层统计表")
+c.doc2docx()
+c.xls2xlsx()
+c = Change("./4储层表")
+c.doc2docx()
+c.xls2xlsx()
 ################################################################################
 # 程序日志记录
 class Logger(object):
@@ -51,7 +67,7 @@ def get_thickness(x):
 def view_bar(num, total):
     rate = float(num) / float(total)
     rate_num = int(rate * 100)
-    r = '\r[%s%s]%d%%' % ("=" * rate_num, " " * (100 - rate_num), rate_num)
+    r = '\r[%s%s]%d%%' % ("#" * rate_num, " " * (100 - rate_num), rate_num)
     sys.stdout.write(r)
     sys.stdout.flush()
 
@@ -118,22 +134,24 @@ def document_replace():
     document.save(newFile)
 
 def check(document):
-    print('well_Tag==', well_Tag)
+    # print('well_Tag==', well_Tag)
     # tables
     for table in document.tables:
         for row in range(len(table.rows)):
+            view_bar(row, len(table.rows) - 1)# 进度条
             for col in range(len(table.columns)):
                 for key, value in DICT.items():
                     if key in table.cell(row, col).text:
-                        print(key + " = " + value)
+                        # print(key + " = " + value)
                         table.cell(row, col).text = table.cell(row, col).text.replace(key, value)
 
     # paragraphs
     for para in document.paragraphs:
         for i in range(len(para.runs)):
+            # view_bar(i, len(para.runs) - 1)
             for key, value in DICT.items():
                 if key in para.runs[i].text:
-                    print(key + " = " + value)
+                    # print(key + " = " + value)
                     para.runs[i].text = para.runs[i].text.replace(key, value)
 
     # sections
@@ -141,7 +159,7 @@ def check(document):
         for i in range(len(sec.header.paragraphs)):
             for key, value in DICT.items():
                 if key in sec.header.paragraphs[i].text:
-                    print(key + " = " + value)
+                    # print(key + " = " + value)
                     sec.header.paragraphs[i].text = sec.header.paragraphs[i].text.replace(key, value)
     return document
 ################################################################################
@@ -293,37 +311,39 @@ elif bit1_Depth != '':
 
 # 地理位置geo_Position
 geographic_Position = document.tables[0].cell(30, 2).text.strip()
-if '省' in geographic_Position:
-    geographic_Position = geographic_Position.split('省')
-    geographic_Position1 = ''.join([geographic_Position[0], '省'])
-    if '县' not in geographic_Position[1]:
-        geographic_Position2 = geographic_Position[1].split('市')
-        geographic_Position2 = ''.join([geographic_Position2[0], '市'])
-    else:
-        geographic_Position2 = geographic_Position[1].split('县')
-        geographic_Position2 = geographic_Position2[0]
-        if '市' in geographic_Position2:
-            geographic_Position2 = geographic_Position2.split('市')[1]
-        geographic_Position2 = ''.join([geographic_Position2, '县'])
-elif '省' not in geographic_Position:
-    geographic_Position = geographic_Position.split('市')
-    geographic_Position1 = ''.join([geographic_Position[0], '市'])
-    geographic_Position2 = geographic_Position[1].split('区')
-    geographic_Position2 = ''.join([geographic_Position2[0], '区'])
-geo_Position = ''.join([geographic_Position1, geographic_Position2])
+if geographic_Position != '':
+    if '省' in geographic_Position:
+        geographic_Position = geographic_Position.split('省')
+        geographic_Position1 = ''.join([geographic_Position[0], '省'])
+        if '县' not in geographic_Position[1]:
+            geographic_Position2 = geographic_Position[1].split('市')
+            geographic_Position2 = ''.join([geographic_Position2[0], '市'])
+        else:
+            geographic_Position2 = geographic_Position[1].split('县')
+            geographic_Position2 = geographic_Position2[0]
+            if '市' in geographic_Position2:
+                geographic_Position2 = geographic_Position2.split('市')[1]
+            geographic_Position2 = ''.join([geographic_Position2, '县'])
+    elif '省' not in geographic_Position:
+        geographic_Position = geographic_Position.split('市')
+        geographic_Position1 = ''.join([geographic_Position[0], '市'])
+        geographic_Position2 = geographic_Position[1].split('区')
+        geographic_Position2 = ''.join([geographic_Position2[0], '区'])
+    geo_Position = ''.join([geographic_Position1, geographic_Position2])
 
 # 构造位置stru_Position
 structure_Position = document.tables[0].cell(31, 2).text
-structure_Position = structure_Position.replace(' ', '')
-structure_Position = structure_Position.replace('四川盆地', '')
-structure_Position = structure_Position.split('构造')
-stru_Position = structure_Position[0]
-if '高石' in stru_Position:
-    stru_Position = '高石梯'
-elif '磨溪' in stru_Position:
-    stru_Position = '磨溪'
-elif '威远' in stru_Position:
-    stru_Position = '威远'
+if structure_Position != '':
+    structure_Position = structure_Position.replace(' ', '')
+    structure_Position = structure_Position.replace('四川盆地', '')
+    structure_Position = structure_Position.split('构造')
+    stru_Position = structure_Position[0]
+    if '高石' in stru_Position:
+        stru_Position = '高石梯'
+    elif '磨溪' in stru_Position:
+        stru_Position = '磨溪'
+    elif '威远' in stru_Position:
+        stru_Position = '威远'
 
 # 钻井液flu_Property, flu_Density, flu_Viscosity
 flu_Property = document.tables[1].cell(9, 2).text.strip()
@@ -762,15 +782,21 @@ DICT_CHECK = {
     "套管1井段": casing1_interval,
     "钻头1深度": bit1_Depth
 }
-
+remind1 = []
+remind2 = []
 remind = []
 if check_or_not == 0:
     for k, v in DICT_CHECK.items():
-        if v == '':
-            temp_str = ''.join(['请注意:', k, '没有填写\n'])
-            remind.append(temp_str)
+        if v != '':
+            temp_str1 = ''.join([k, '：', v, '\n'])
+            remind1.append(temp_str1)
+        elif v == '':
+            temp_str2 = ''.join(['请注意:', k, '没有填写\n'])
+            remind2.append(temp_str2)
+    remind = ''.join(remind1 + remind2)
     if remind != '':
-        remind.append('水泥返高若不填写可能会报错。')
+        if actual_Depth == '':
+            remind.append('再次提醒：水泥返高一定要填写，若不填写可能会报错。')
         remind = ''.join(remind)
         gui.msgbox(msg=remind,title="提示")
     else:
@@ -1169,7 +1195,7 @@ DICT = {
 
 print('模板替换开始，请等待...')
 document_replace()#模板替换主程序
-print('【模板替换】完成')
+print('\n【模板替换】完成')
 time.sleep(0.5)
 print('储层表添加中，请等待...')
 
