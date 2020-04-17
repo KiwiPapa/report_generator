@@ -104,6 +104,7 @@ for row in range(1, sheet2_openpyxl.max_row):
         if sheet2_openpyxl[row][col - 1].value == '总含气量':
             delete_Col = col
             sheet2_openpyxl.delete_cols(delete_Col)
+wb2_openpyxl.save('.\\4储层表\\Result_New.xlsx')
 
 # insert column
 sheet2_openpyxl.insert_cols(4)
