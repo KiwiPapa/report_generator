@@ -1,19 +1,12 @@
 # -*- coding: utf-8 -*-
-import os
-import sys
-import time
-
+import os, sys, time, xlrd, openpyxl
 import easygui as gui
-import openpyxl
 import pandas as pd
-import xlrd
 from docx import Document
-from docx.enum.table import WD_ALIGN_VERTICAL
-from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_PARAGRAPH_ALIGNMENT
+from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.oxml.ns import qn
 from docx.shared import Cm, Inches, Pt, RGBColor
-from pandas import Series
-
 from changeOffice import Change
 
 # 转换文件，有问题，目前采用wps手动转换方法
@@ -53,9 +46,8 @@ class Logger(object):
     def flush(self):
         pass
 
-
-sys.stdout = Logger('.\\程序输出日志.log', sys.stdout)
-sys.stderr = Logger('.\\程序Bug日志.log_file', sys.stderr)
+# sys.stdout = Logger('.\\程序输出日志.log', sys.stdout)
+# sys.stderr = Logger('.\\程序Bug日志.log_file', sys.stderr)
 ################################################################################
 # 函数定义集结地
 # 定义一个函数，增加重新计算后的厚度列
@@ -921,21 +913,21 @@ if (calculation_End <= float(end_Evaluation)) & (calculation_Start >= float(star
     ratio_Series = df_temp.groupby(by=['结论'])['重计算厚度'].sum() / df_temp['重计算厚度'].sum() * 100
     if ratio_Series.__len__() == 2:
         if '优' not in ratio_Series:
-            ratio_Series = ratio_Series.append(Series({'优': 0}))
+            ratio_Series = ratio_Series.append(pd.Series({'优': 0}))
         elif '中' not in ratio_Series:
-            ratio_Series = ratio_Series.append(Series({'中': 0}))
+            ratio_Series = ratio_Series.append(pd.Series({'中': 0}))
         elif '差' not in ratio_Series:
-            ratio_Series = ratio_Series.append(Series({'差': 0}))
+            ratio_Series = ratio_Series.append(pd.Series({'差': 0}))
     elif ratio_Series.__len__() == 1:
         if ('优' not in ratio_Series) & ('中' not in ratio_Series):
-            ratio_Series = ratio_Series.append(Series({'优': 0}))
-            ratio_Series = ratio_Series.append(Series({'中': 0}))
+            ratio_Series = ratio_Series.append(pd.Series({'优': 0}))
+            ratio_Series = ratio_Series.append(pd.Series({'中': 0}))
         elif ('优' not in ratio_Series) & ('差' not in ratio_Series):
-            ratio_Series = ratio_Series.append(Series({'优': 0}))
-            ratio_Series = ratio_Series.append(Series({'差': 0}))
+            ratio_Series = ratio_Series.append(pd.Series({'优': 0}))
+            ratio_Series = ratio_Series.append(pd.Series({'差': 0}))
         elif ('中' not in ratio_Series) & ('差' not in ratio_Series):
-            ratio_Series = ratio_Series.append(Series({'中': 0}))
-            ratio_Series = ratio_Series.append(Series({'差': 0}))
+            ratio_Series = ratio_Series.append(pd.Series({'中': 0}))
+            ratio_Series = ratio_Series.append(pd.Series({'差': 0}))
 
 # 统计结论
 
@@ -1040,7 +1032,7 @@ if formation_be_or_not == '有储层':
     for row in range(1, rows2 + 1):
         formation_Start = df2.loc[row, '储层Start']
         formation_End = df2.loc[row, '储层End']
-        print('----------------第', row, '个储层内的井段----------------')
+        # print('----------------第', row, '个储层内的井段----------------')
         if (formation_End <= float(end_Evaluation)) & (formation_Start >= float(start_Evaluation)):
             df_temp = df1.loc[(df1['井段Start'] >= formation_Start) & (df1['井段Start'] <= formation_End), :]
             # 获取储层起始深度到第一层井段底界的结论
@@ -1077,21 +1069,21 @@ if formation_be_or_not == '有储层':
             ratio_Series = df_temp.groupby(by=['结论'])['重计算厚度'].sum() / df_temp['重计算厚度'].sum() * 100
             if ratio_Series.__len__() == 2:
                 if '优' not in ratio_Series:
-                    ratio_Series = ratio_Series.append(Series({'优': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'优': 0}))
                 elif '中' not in ratio_Series:
-                    ratio_Series = ratio_Series.append(Series({'中': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'中': 0}))
                 elif '差' not in ratio_Series:
-                    ratio_Series = ratio_Series.append(Series({'差': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'差': 0}))
             elif ratio_Series.__len__() == 1:
                 if ('优' not in ratio_Series) & ('中' not in ratio_Series):
-                    ratio_Series = ratio_Series.append(Series({'优': 0}))
-                    ratio_Series = ratio_Series.append(Series({'中': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'优': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'中': 0}))
                 elif ('优' not in ratio_Series) & ('差' not in ratio_Series):
-                    ratio_Series = ratio_Series.append(Series({'优': 0}))
-                    ratio_Series = ratio_Series.append(Series({'差': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'优': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'差': 0}))
                 elif ('中' not in ratio_Series) & ('差' not in ratio_Series):
-                    ratio_Series = ratio_Series.append(Series({'中': 0}))
-                    ratio_Series = ratio_Series.append(Series({'差': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'中': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'差': 0}))
 
             # 条件判断，参数需要研究
             if ratio_Series['优'] >= 95:
@@ -1117,11 +1109,12 @@ if formation_be_or_not == '有储层':
                     evaluation_of_formation = '优到差，以差等为主'
             elif (80 >= ratio_Series['优'] >= 20) & (80 >= ratio_Series['差'] >= 20) & (80 >= ratio_Series['中'] >= 20):
                 evaluation_of_formation = '优到中到差'
-            print(ratio_Series)  # 某一储层的评价
-            print(evaluation_of_formation)  # 全部储层的描述list
+            # print(ratio_Series)  # 某一储层的评价
+            # print(evaluation_of_formation)  # 全部储层的描述list
             all_evaluation_of_formation.append(evaluation_of_formation)
         else:
-            print('储层界超出了测量范围，请检查')
+            # print('储层界超出了测量范围，请检查')
+            pass
 # print(all_evaluation_of_formation)
 ################################################################################
 # 基于文本替换方案的文档生成
@@ -1294,7 +1287,7 @@ if set_or_not == 0:
         for col in range(len(table.columns)):
             table.cell(row, 0).text = str(row - 1)  # 因为序号带小数，重新赋值
             table.cell(row, col).paragraphs[0].paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
-            table.cell(row, col).vertical_alignment = WD_ALIGN_VERTICAL.CENTER
+            table.cell(row, col).vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
 
     table.cell(0, 0).text = '序号'
     table.cell(1, 0).text = ''
@@ -1318,7 +1311,7 @@ for row in range(1, len(upper_interval_table.rows)):
 ################################################################################
 # 储层固井质量评价
 p = document.add_paragraph()
-p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
 p.paragraph_format.line_spacing = Pt(24)
 run = p.add_run(u"3.储层段固井质量分析")
 run.font.name = 'Times New Roman'  # 英文字体
@@ -1335,7 +1328,7 @@ if formation_be_or_not == '有储层':
                                                     'formation_Start_Depth', 'formation_End_Depth'))
     # 添加段落
     p = document.add_paragraph()
-    p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
     p.paragraph_format.line_spacing = Pt(24)
     p.paragraph_format.first_line_indent = Cm(0.74)  # 首行缩进0.74厘米，即2个字符
     r = p.add_run('该次测井井段有' + str(formation_Number) + '个解释储层。')
@@ -1443,7 +1436,7 @@ if formation_be_or_not == '有储层':
         calculation_Start = float(calculation_Start)
         calculation_End = formation_pic_DataFrame.loc[pic_number, '第一个储层start']
         calculation_End = float(calculation_End)
-        print('----------------第', pic_number + 1, '个储层上部井段----------------')
+        # print('----------------第', pic_number + 1, '个储层上部井段----------------')
         if (calculation_End <= float(end_Evaluation)) & (calculation_Start >= float(start_Evaluation)):
             df_temp = df1.loc[(df1['井段Start'] >= calculation_Start) & (df1['井段Start'] <= calculation_End), :]
             # 获取储层起始深度到第一层井段底界的结论
@@ -1479,21 +1472,21 @@ if formation_be_or_not == '有储层':
             ratio_Series = df_temp.groupby(by=['结论'])['重计算厚度'].sum() / df_temp['重计算厚度'].sum() * 100
             if ratio_Series.__len__() == 2:
                 if '优' not in ratio_Series:
-                    ratio_Series = ratio_Series.append(Series({'优': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'优': 0}))
                 elif '中' not in ratio_Series:
-                    ratio_Series = ratio_Series.append(Series({'中': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'中': 0}))
                 elif '差' not in ratio_Series:
-                    ratio_Series = ratio_Series.append(Series({'差': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'差': 0}))
             elif ratio_Series.__len__() == 1:
                 if ('优' not in ratio_Series) & ('中' not in ratio_Series):
-                    ratio_Series = ratio_Series.append(Series({'优': 0}))
-                    ratio_Series = ratio_Series.append(Series({'中': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'优': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'中': 0}))
                 elif ('优' not in ratio_Series) & ('差' not in ratio_Series):
-                    ratio_Series = ratio_Series.append(Series({'优': 0}))
-                    ratio_Series = ratio_Series.append(Series({'差': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'优': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'差': 0}))
                 elif ('中' not in ratio_Series) & ('差' not in ratio_Series):
-                    ratio_Series = ratio_Series.append(Series({'中': 0}))
-                    ratio_Series = ratio_Series.append(Series({'差': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'中': 0}))
+                    ratio_Series = ratio_Series.append(pd.Series({'差': 0}))
 
             # 条件判断，参数需要研究
             if ratio_Series['优'] >= 95:
@@ -1519,11 +1512,12 @@ if formation_be_or_not == '有储层':
                     evaluation_of_formation_upper = '优到差，以差等为主'
             elif (95 >= ratio_Series['优'] >= 5) & (95 >= ratio_Series['差'] >= 5) & (95 >= ratio_Series['中'] >= 5):
                 evaluation_of_formation_upper = '优到中到差'
-            print(ratio_Series)  # 某一储层的评价
-            print(evaluation_of_formation_upper)  # 全部储层的描述list
+            # print(ratio_Series)  # 某一储层的评价
+            # print(evaluation_of_formation_upper)  # 全部储层的描述list
             all_evaluation_of_formation_upper.append(evaluation_of_formation_upper)
         else:
-            print('统计范围超出了测量范围，请检查')
+            # print('统计范围超出了测量范围，请检查')
+            pass
     # print(all_evaluation_of_formation_upper)
     ################################################################################
     # 储层上部描述输出
@@ -1576,7 +1570,7 @@ if formation_be_or_not == '有储层':
             formation_Wave_Energy = '较弱到较强'
         ###
         p = document.add_paragraph()
-        p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
         p.paragraph_format.line_spacing = Pt(24)
         p.paragraph_format.first_line_indent = Cm(0.74)  # 首行缩进0.74厘米，即2个字符
         r = p.add_run('（' + str(pic_number + 1) + '）' + formation_Start_End + 'm该封固井段上部声幅值')
@@ -1651,7 +1645,7 @@ if formation_be_or_not == '有储层':
         r.font.size = Pt(12)
         ########################################################################################
         p = document.add_paragraph()
-        p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
         p.paragraph_format.line_spacing = Pt(24)
         p.paragraph_format.first_line_indent = Cm(0.74)  # 首行缩进0.74厘米，即2个字符
 
@@ -1777,7 +1771,7 @@ if formation_be_or_not == '有储层':
         elif all_Formation_Extentions[0] == '.bmp':
             run.add_picture(PATH + '\\' + all_Formation_Names[pic_number] + '.bmp', width=Inches(5.0))
         p = document.add_paragraph()
-        p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
         p.paragraph_format.line_spacing = Pt(24)
         r = p.add_run('图' + str(pic_number + 1) + '  ' + well_Name + '井（' + formation_Start_End + 'm）固井处理成果图')
         # r.bold = True
@@ -1787,7 +1781,7 @@ if formation_be_or_not == '有储层':
         # print('已添加第', str(pic_number + 1), '个储层的段落')
 else:
     p = document.add_paragraph()
-    p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
     p.paragraph_format.line_spacing = Pt(24)
     p.paragraph_format.first_line_indent = Cm(0.74)  # 首行缩进0.74厘米，即2个字符
     r = p.add_run('该次测量井段内无储层解释。')
@@ -1831,7 +1825,7 @@ if bad_interval_be_or_not == '有固井差':
     bad_Start_Ends = ''.join(bad_Start_Ends).rstrip('、')
 
     p = document.add_paragraph()
-    p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
     p.paragraph_format.line_spacing = Pt(24)
     run = p.add_run(u"三 建议及其它")
     run.font.name = '黑体'  # 英文字体
@@ -1843,7 +1837,7 @@ if bad_interval_be_or_not == '有固井差':
     if formation_be_or_not == '无储层':
         pic_number = -1
     p = document.add_paragraph()
-    p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
     p.paragraph_format.line_spacing = Pt(24)
     p.paragraph_format.first_line_indent = Cm(0.74)  # 首行缩进0.74厘米，即2个字符
     r = p.add_run(
@@ -1877,7 +1871,7 @@ if bad_interval_be_or_not == '有固井差':
             run.add_picture(PATH + '\\' + bad_Interval_Names[bad_number] + '.bmp', width=Inches(5.0))
 
         p = document.add_paragraph()
-        p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
         p.paragraph_format.line_spacing = Pt(24)
         r = p.add_run('图' + str(pic_number + bad_number + 2) + ' ' + well_Name + '井（' + bad_Start_End + 'm）固井处理成果图')
         # r.bold = True
@@ -1887,7 +1881,7 @@ if bad_interval_be_or_not == '有固井差':
         # print('已添加第', str(bad_number + 1), '个固井为差的段落')
 else:
     p = document.add_paragraph()
-    p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
     p.paragraph_format.line_spacing = Pt(24)
     run = p.add_run(u"三 建议及其它")
     run.font.name = '黑体'  # 英文字体
@@ -1897,7 +1891,7 @@ else:
     run.font.color.rgb = RGBColor(0, 0, 0)
 
     p = document.add_paragraph()
-    p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
     p.paragraph_format.line_spacing = Pt(24)
     p.paragraph_format.first_line_indent = Cm(0.74)  # 首行缩进0.74厘米，即2个字符
     r = p.add_run('测量井段内的固井质量以优等为主。')
