@@ -56,7 +56,6 @@ df_all.reset_index(drop=True, inplace=True)#重新设置列索引
 #对df_all进行操作
 df_all.loc[len(df_temp1) - 1, '井 段\n (m)'] = ''.join([str(df_all.loc[len(df_temp1) - 1, '井段Start']), '-', \
                                                   str(df_all.loc[len(df_temp1), '井段Start'])])
-print(df_all.loc[len(df_temp1) - 1, '井 段\n (m)'])
 df_all.loc[len(df_temp1) - 1, '厚 度\n (m)'] = df_all.loc[len(df_temp1), '井段Start'] - df_all.loc[len(df_temp1) - 1, '井段Start']
 
 # df_all.drop(['井段Start', '井段End', '重计算厚度'], axis=1, inplace=True)
