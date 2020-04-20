@@ -25,16 +25,19 @@ nrow1 = sheet1.nrows
 ncol1 = sheet1.ncols
 
 # 用openpyxl进行处理
+Flag = ''#防止Layer表格中无"垂直定位"字段
 sheet1_openpyxl = wb1_openpyxl[wb1_openpyxl.sheetnames[0]]
 for row in range(nrow1):
     for col in range(ncol1):
         if sheet1.cell_value(row, col) == '垂直定位':
+            Flag = 1
             delete_Row = row
-sheet1_openpyxl.delete_rows(delete_Row + 1)
+if Flag == 1:
+    sheet1_openpyxl.delete_rows(delete_Row + 1)
 # deleterows(sheet1_openpyxl, delete_Row + 1)#openpyxl中数行数从1开始
 sheet1_openpyxl['C2'] = None
 
-for row in range(1, nrow1):
+for row in range(1, nrow1 + 1):
     for col in range(1, ncol1):
         if sheet1_openpyxl[row][col].value == '龙一2':
             sheet1_openpyxl[row][col].value = '龙一^2'
@@ -46,6 +49,14 @@ for row in range(1, nrow1):
             sheet1_openpyxl[row][col].value = '龙一^１3'
         elif sheet1_openpyxl[row][col].value == '龙一１4':
             sheet1_openpyxl[row][col].value = '龙一^１4'
+        elif sheet1_openpyxl[row][col].value == '龙一11':
+            sheet1_openpyxl[row][col].value = '龙一^11'
+        elif sheet1_openpyxl[row][col].value == '龙一12':
+            sheet1_openpyxl[row][col].value = '龙一^12'
+        elif sheet1_openpyxl[row][col].value == '龙一13':
+            sheet1_openpyxl[row][col].value = '龙一^13'
+        elif sheet1_openpyxl[row][col].value == '龙一14':
+            sheet1_openpyxl[row][col].value = '龙一^14'
         else:
             pass
 wb1_openpyxl.save('.\\极睿导出\\Layer_New.xlsx')
@@ -102,6 +113,36 @@ for row in range(1, sheet2_openpyxl.max_row):
 for row in range(1, sheet2_openpyxl.max_row):
     for col in range(1, sheet2_openpyxl.max_column):
         if sheet2_openpyxl[row][col - 1].value == '总含气量':
+            delete_Col = col
+            sheet2_openpyxl.delete_cols(delete_Col)
+
+for row in range(1, sheet2_openpyxl.max_row):
+    for col in range(1, sheet2_openpyxl.max_column):
+        if sheet2_openpyxl[row][col - 1].value == '自然伽玛':
+            delete_Col = col
+            sheet2_openpyxl.delete_cols(delete_Col)
+
+for row in range(1, sheet2_openpyxl.max_row):
+    for col in range(1, sheet2_openpyxl.max_column):
+        if sheet2_openpyxl[row][col - 1].value == '补偿中子':
+            delete_Col = col
+            sheet2_openpyxl.delete_cols(delete_Col)
+
+for row in range(1, sheet2_openpyxl.max_row):
+    for col in range(1, sheet2_openpyxl.max_column):
+        if sheet2_openpyxl[row][col - 1].value == '深侧向':
+            delete_Col = col
+            sheet2_openpyxl.delete_cols(delete_Col)
+
+for row in range(1, sheet2_openpyxl.max_row):
+    for col in range(1, sheet2_openpyxl.max_column):
+        if sheet2_openpyxl[row][col - 1].value == '浅侧向':
+            delete_Col = col
+            sheet2_openpyxl.delete_cols(delete_Col)
+
+for row in range(1, sheet2_openpyxl.max_row):
+    for col in range(1, sheet2_openpyxl.max_column):
+        if sheet2_openpyxl[row][col - 1].value == '储层厚度':
             delete_Col = col
             sheet2_openpyxl.delete_cols(delete_Col)
 wb2_openpyxl.save('.\\4储层表\\Result_New.xlsx')

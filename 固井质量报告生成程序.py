@@ -1840,9 +1840,13 @@ if bad_interval_be_or_not == '有固井差':
     p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
     p.paragraph_format.line_spacing = Pt(24)
     p.paragraph_format.first_line_indent = Cm(0.74)  # 首行缩进0.74厘米，即2个字符
-    r = p.add_run(
-        bad_Start_Ends + '井段声幅值较高，部分套管接箍信号明显，建议采取相应措施（见图' + str(pic_number + 2) + '-' + str(
-            pic_number + bad_number + 2) + '）。')
+    if bad_number != 0:
+        r = p.add_run(
+            bad_Start_Ends + '井段声幅值较高，部分套管接箍信号明显，建议采取相应措施（见图' + str(pic_number + 2) + '-' + str(
+                pic_number + bad_number + 2) + '）。')
+    elif bad_number == 0:
+        r = p.add_run(
+            bad_Start_Ends + '井段声幅值较高，部分套管接箍信号明显，建议采取相应措施（见图' + str(pic_number + 2) + '）。')
     # r.bold = True
     r.font.name = 'Times New Roman'
     r.element.rPr.rFonts.set(qn('w:eastAsia'), '宋体')
