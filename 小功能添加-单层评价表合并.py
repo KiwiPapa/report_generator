@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
-import os
+import os, openpyxl
 import pandas as pd
+from changeOffice import Change
+#王淑洁
+splicing_Depth = float(input('请输入合并井段深度点（最好选在同一个固井质量相同的段，hint:1965）'))
 
-splicing_Depth = 1965
-
-
-# 定义一个函数，增加重新计算后的厚度列
-def get_thickness(x):
-    thickness = x['井段End'] - x['井段Start']
-    return thickness
-
+#转换文件，可能转出的文件读写空值，那么还得利用WPS或者LIBRE OFFICE
+c = Change(".\\合并单层表test")
+c.doc2docx()
+c.xls2xlsx()
 
 PATH = ".\\合并单层表test"
 for fileName in os.listdir(PATH):
@@ -30,7 +29,6 @@ df1.loc[:, "井段End"] = df1["井段End"].str.replace(" ", "").astype('float')
 
 # 截取拼接点以上的数据体
 df_temp1 = df1.loc[(df1['井段Start'] <= splicing_Depth), :].copy()  # 加上copy()可防止直接修改df报错
-df_temp1.loc[:, "重计算厚度"] = df_temp1.apply(get_thickness, axis=1)
 # print(df_temp1)
 
 #####################################################
@@ -47,7 +45,6 @@ df2.loc[:, "井段End"] = df2["井段End"].str.replace(" ", "").astype('float')
 # 截取拼接点以下的数据体
 df_temp2 = df2.loc[(df2['井段Start'] >= splicing_Depth), :].copy()  # 加上copy()可防止直接修改df报错
 df_temp2.reset_index(drop=True, inplace=True)  # 重新设置列索引
-df_temp2.loc[:, "重计算厚度"] = df_temp2.apply(get_thickness, axis=1)
 # print(df_temp2)
 
 
@@ -60,10 +57,15 @@ df_all.loc[len(df_temp1) - 1, '厚 度\n (m)'] = df_all.loc[len(df_temp1), '井�
     len(df_temp1) - 1, '井段Start']
 df_all.set_index(["解释\n序号"], inplace=True)
 df_all.reset_index(drop=True, inplace=True)  # 重新设置列索引
-# print(df_all)
+print(df_all)
 
 #################################################################
 # 在指定深度段统计
+# 先定义一个函数，增加重新计算后的厚度列
+def get_thickness(x):
+    thickness = x['井段End'] - x['井段Start']
+    return thickness
+
 calculation_Start = float(input('请输入开始统计深度'))
 calculation_End = float(input('请输入结束统计深度'))
 
@@ -71,7 +73,7 @@ start_Evaluation = df_all.loc[0, '井 段\n (m)'].split('-')[0]
 end_Evaluation = df_all.loc[len(df_all) - 1, '井 段\n (m)'].split('-')[1]
 if (calculation_End <= float(end_Evaluation)) & (calculation_Start >= float(start_Evaluation)):
     df_temp = df_all.loc[(df_all['井段Start'] >= calculation_Start) & (df_all['井段Start'] <= calculation_End), :]
-    # 获取储层起始深度到第一层井段底界的结论
+    # 获取起始深度到第一层井段底界的结论
     df_temp1 = df_all.loc[(df_all['井段Start'] <= calculation_Start), :]
     start_to_upper_result = df_temp1.loc[len(df_temp1) - 1, '结论']
     # 补充储层界到井段的深度
@@ -130,15 +132,19 @@ Zhong_Ratio = str(round(ratio_Series['中'], 2))
 actual_Cha = str(round(calculation_End - calculation_Start - float(actual_Hao) - float(actual_Zhong), 2))
 Cha_Ratio = str(round(ratio_Series['差'], 2))
 
-print(actual_Hao)
-print(Hao_Ratio)
-print(actual_Zhong)
-print(Zhong_Ratio)
-print(actual_Cha)
-print(Cha_Ratio)
+PATH = '.\\合并单层表test\\'
+wb = openpyxl.load_workbook(PATH + '1统模板.xlsx')
+sheet = wb[wb.sheetnames[0]]
+sheet['C4'] = actual_Hao
+sheet['D4'] = Hao_Ratio
+sheet['C5'] = actual_Zhong
+sheet['D5'] = Zhong_Ratio
+sheet['C6'] = actual_Cha
+sheet['D6'] = Cha_Ratio
+wb.save('解释成果表-1统.xlsx')
 
-# 保存为Excel
-df_all.drop(['井段Start', '井段End', '重计算厚度'], axis=1, inplace=True)
+# 单层统计表保存为Excel
+df_all.drop(['井段Start', '井段End'], axis=1, inplace=True)
 writer = pd.ExcelWriter('output.xlsx')
 df_all.to_excel(writer, 'Sheet1')
 writer.save()

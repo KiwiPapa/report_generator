@@ -20,16 +20,16 @@ from changeOffice import Change
 # word.Quit
 
 #转换文件，可能转出的文件读写空值，那么还得利用WPS或者LIBRE OFFICE
-c = Change("./1原始文件")
+c = Change(".\\1原始文件")
 c.doc2docx()
 c.xls2xlsx()
-c = Change("./2统计表")
+c = Change(".\\2统计表")
 c.doc2docx()
 c.xls2xlsx()
-c = Change("./3单层统计表")
+c = Change(".\\3单层统计表")
 c.doc2docx()
 c.xls2xlsx()
-c = Change("./4储层表")
+c = Change(".\\4储层表")
 c.doc2docx()
 c.xls2xlsx()
 ################################################################################
