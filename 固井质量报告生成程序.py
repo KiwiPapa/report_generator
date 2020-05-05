@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import os, sys, time, xlrd, openpyxl
+import os, sys, time, xlrd, openpyxl, shutil
 import easygui as gui
 import pandas as pd
 from docx import Document
@@ -19,19 +19,6 @@ from changeOffice import Change
 # doc.Close
 # word.Quit
 
-#转换文件，可能转出的文件读写空值，那么还得利用WPS或者LIBRE OFFICE
-c = Change(".\\1原始文件")
-c.doc2docx()
-c.xls2xlsx()
-c = Change(".\\2统计表")
-c.doc2docx()
-c.xls2xlsx()
-c = Change(".\\3单层统计表")
-c.doc2docx()
-c.xls2xlsx()
-c = Change(".\\4储层表")
-c.doc2docx()
-c.xls2xlsx()
 ################################################################################
 # 程序日志记录
 class Logger(object):
@@ -46,14 +33,29 @@ class Logger(object):
     def flush(self):
         pass
 
+
 # sys.stdout = Logger('.\\程序输出日志.log', sys.stdout)
 # sys.stderr = Logger('.\\程序Bug日志.log_file', sys.stderr)
 ################################################################################
 # 函数定义集结地
+
+def mkdir(path):
+    path = path.strip()  # 去除首位空格
+    path = path.rstrip("\\")  # 去除尾部 \ 符号
+    isExists = os.path.exists(path)
+    if not isExists:
+        os.makedirs(path)
+        print(path + ' 创建成功')
+        return True
+    else:
+        print(path + ' 目录已存在')
+        return False
+
 # 定义一个函数，增加重新计算后的厚度列
 def get_thickness(x):
     thickness = x['井段End'] - x['井段Start']
     return thickness
+
 
 # 定义进度条函数，用作进度展示
 def view_bar(num, total):
@@ -63,11 +65,13 @@ def view_bar(num, total):
     sys.stdout.write(r)
     sys.stdout.flush()
 
+
 # 函数，获取文件路径、文件名、后缀名
 def get_filePath_fileName_fileExt(filename):
     (filepath, tempfilename) = os.path.split(filename)
     (shotname, extension) = os.path.splitext(tempfilename)
     return filepath, shotname, extension
+
 
 # 文档替换主程序
 def document_replace():
@@ -98,10 +102,10 @@ def document_replace():
         if '威' in well_Name:
             fetch_or_not = gui.indexbox(msg="是否调取威远声幅报告模板（不含储层）？", title="提示", choices=("调取", "不调取"))
             if fetch_or_not == 0:
-                document = Document(TEMPLATE_PATH + '\\template-without-formation.docx')#和常规无储层的模板一致
+                document = Document(TEMPLATE_PATH + '\\template-without-formation.docx')  # 和常规无储层的模板一致
                 well_Tag = 'normal-well-without-formation'
             elif fetch_or_not == 1:
-                document = Document(TEMPLATE_PATH + '\\template-without-formation.docx')#和常规无储层的模板一致
+                document = Document(TEMPLATE_PATH + '\\template-without-formation.docx')  # 和常规无储层的模板一致
                 well_Tag = 'normal-well-without-formation'
         elif '宁' in well_Name:
             fetch_or_not = gui.indexbox(msg="是否调取长宁声幅报告模板（不含储层）？", title="提示", choices=("调取", "不调取"))
@@ -109,7 +113,7 @@ def document_replace():
                 document = Document(TEMPLATE_PATH + '\\template-without-formation-changning.docx')
                 well_Tag = 'changning-without-formation'
             elif fetch_or_not == 1:
-                document = Document(TEMPLATE_PATH + '\\template-without-formation.docx')#和常规无储层的模板一致
+                document = Document(TEMPLATE_PATH + '\\template-without-formation.docx')  # 和常规无储层的模板一致
                 well_Tag = 'normal-well-without-formation'
         else:
             document = Document(TEMPLATE_PATH + '\\template-without-formation.docx')
@@ -125,12 +129,13 @@ def document_replace():
         # table.style.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     document.save(newFile)
 
+
 def check(document):
     # print('well_Tag==', well_Tag)
     # tables
     for table in document.tables:
         for row in range(len(table.rows)):
-            view_bar(row, len(table.rows) - 1)# 进度条
+            view_bar(row, len(table.rows) - 1)  # 进度条
             for col in range(len(table.columns)):
                 for key, value in DICT.items():
                     if key in table.cell(row, col).text:
@@ -154,11 +159,82 @@ def check(document):
                     # print(key + " = " + value)
                     sec.header.paragraphs[i].text = sec.header.paragraphs[i].text.replace(key, value)
     return document
+
+################################################################################
+# 转换文件，可能转出的文件读写空值，那么还得利用WPS或者LIBRE OFFICE
+
+mkdir('.\\1原始资料-临时')
+mkdir('.\\2统计表-临时')
+mkdir('.\\3单层统计表-临时')
+mkdir('.\\4储层表-临时')
+
+for fileName in os.listdir('.\\1原始资料'):
+    if 'doc' in fileName:
+        shutil.copy('.\\1原始资料\\' + fileName, '.\\1原始资料-临时')
+        pass
+for fileName in os.listdir('.\\2统计表'):
+    if 'xls' in fileName:
+        shutil.copy('.\\2统计表\\' + fileName, '.\\2统计表-临时')
+        pass
+for fileName in os.listdir('.\\3单层统计表'):
+    if 'xls' in fileName:
+        shutil.copy('.\\3单层统计表\\' + fileName, '.\\3单层统计表-临时')
+        pass
+for fileName in os.listdir('.\\4储层表'):
+    if 'xls' in fileName:
+        shutil.copy('.\\4储层表\\' + fileName, '.\\4储层表-临时')
+        pass
+Goal_dir = Change(".\\1原始资料")
+Goal_dir.doc2docx()
+Goal_dir.xls2xlsx()
+Goal_dir.ppt2pptx()
+Goal_dir = Change(".\\2统计表")
+Goal_dir.doc2docx()
+Goal_dir.xls2xlsx()
+Goal_dir.ppt2pptx()
+Goal_dir = Change(".\\3单层统计表")
+Goal_dir.doc2docx()
+Goal_dir.xls2xlsx()
+Goal_dir.ppt2pptx()
+Goal_dir = Change(".\\4储层表")
+Goal_dir.doc2docx()
+Goal_dir.xls2xlsx()
+Goal_dir.ppt2pptx()
+for fileName in os.listdir('.\\1原始资料-临时'):
+    if 'doc' in fileName:
+        shutil.copy('.\\1原始资料-临时\\' + fileName, '.\\1原始资料')
+        pass
+for fileName in os.listdir('.\\2统计表-临时'):
+    if 'doc' in fileName:
+        shutil.copy('.\\2统计表-临时\\' + fileName, '.\\2统计表')
+        pass
+for fileName in os.listdir('.\\3单层统计表-临时'):
+    if 'doc' in fileName:
+        shutil.copy('.\\3单层统计表-临时\\' + fileName, '.\\3单层统计表')
+        pass
+for fileName in os.listdir('.\\4储层表-临时'):
+    if 'doc' in fileName:
+        shutil.copy('.\\4储层表-临时\\' + fileName, '.\\4储层表')
+        pass
+
+isExists = os.path.exists('.\\1原始资料-临时')
+if isExists:
+    shutil.rmtree('.\\1原始资料-临时')
+isExists = os.path.exists('.\\2统计表-临时')
+if isExists:
+    shutil.rmtree('.\\2统计表-临时')
+isExists = os.path.exists('.\\3单层统计表-临时')
+if isExists:
+    shutil.rmtree('.\\3单层统计表-临时')
+isExists = os.path.exists('.\\4储层表-临时')
+if isExists:
+    shutil.rmtree('.\\4储层表-临时')
 ################################################################################
 # 解析docx
 PATH = ".\\1原始资料"
 for fileName in os.listdir(PATH):
-    fileDir = PATH + "\\" + fileName
+    if '.docx' in fileName:
+        fileDir = PATH + "\\" + fileName
     document = Document(fileDir)
 '''
 # 打印所有段落
@@ -465,7 +541,7 @@ casing10_Dia = document.tables[2].cell(24, 3).text.strip()
 casing11_Dia = document.tables[2].cell(25, 3).text.strip()
 casing12_Dia = document.tables[2].cell(26, 3).text.strip()
 
-#避免套管下深井段为单数字而不为井段
+# 避免套管下深井段为单数字而不为井段
 casing1_interval = document.tables[2].cell(15, 6).text.strip()
 casing1_interval = casing1_interval.replace(' ', '')
 casing1_interval = casing1_interval.replace('～', '-')
@@ -696,7 +772,7 @@ for row in range(3, 26):
         pass
 
 # 判断甲方是谁
-if len(document.tables) ==9:
+if len(document.tables) == 9:
     if document.tables[8].cell(2, 6).text.strip() == '√':
         client_Name = document.tables[8].cell(2, 2).text.strip()
     elif document.tables[8].cell(3, 6).text.strip() == '√':
@@ -719,7 +795,7 @@ if len(document.tables) ==9:
         client_Name = document.tables[8].cell(11, 2).text.strip()
     elif document.tables[8].cell(12, 6).text.strip() == '√':
         client_Name = document.tables[8].cell(12, 2).text.strip()
-elif len(document.tables) ==8:
+elif len(document.tables) == 8:
     if document.tables[7].cell(2, 6).text.strip() == '√':
         client_Name = document.tables[7].cell(2, 2).text.strip()
     elif document.tables[7].cell(3, 6).text.strip() == '√':
@@ -742,10 +818,8 @@ elif len(document.tables) ==8:
         client_Name = document.tables[7].cell(11, 2).text.strip()
     elif document.tables[7].cell(12, 6).text.strip() == '√':
         client_Name = document.tables[7].cell(12, 2).text.strip()
-time.sleep(0.5)
-# check_or_not = input('是否进行【原始资料收集登记表】完整性检查？\n【检查】请按【1】,【不检查】请按【其它任意键】')
 
-check_or_not = gui.indexbox(msg="是否进行【原始资料收集登记表】完整性检查？",title="提示",choices=("检查","不检查"))
+check_or_not = gui.indexbox(msg="是否进行【原始资料收集登记表】完整性检查？", title="提示", choices=("检查", "不检查"))
 
 DICT_CHECK = {
     "井名": well_Name,
@@ -790,7 +864,7 @@ if check_or_not == 0:
         if actual_Depth == '':
             remind.append('再次提醒：水泥返高一定要填写，若不填写可能会报错。')
         remind = ''.join(remind)
-        gui.msgbox(msg=remind,title="提示")
+        gui.msgbox(msg=remind, title="提示")
     else:
         remind = '原始资料登记卡填写完整:)'
         gui.msgbox(msg=remind, title="提示")
@@ -801,34 +875,59 @@ print('【原始资料收集登记表】解析完成')
 # 现在开始提取成果表中的内容
 PATH = ".\\2统计表"
 for fileName in os.listdir(PATH):
-    fileDir = PATH + "\\" + fileName
-    workbook = xlrd.open_workbook(fileDir)  # 好像只支持xlsx
+    if '1统' in fileName:
+        fileDir = PATH + "\\" + fileName
+        workbook1 = xlrd.open_workbook(fileDir)
+    elif '2统' in fileName:
+        fileDir = PATH + "\\" + fileName
+        workbook2 = xlrd.open_workbook(fileDir)
 
-sheet = workbook.sheets()[0]
+##########################
+# 解析解释成果表-1统
+sheet1 = workbook1.sheets()[0]
 
-nrow = sheet.nrows
-ncol = sheet.ncols
+nrow1 = sheet1.nrows
+ncol1 = sheet1.ncols
 
 # 统计结论
-good_Length = str(sheet.cell_value(2, 2))
-good_Ratio = str(sheet.cell_value(2, 3))
+good_Length1 = str(sheet1.cell_value(3, 2))
+good_Ratio1 = str(sheet1.cell_value(3, 3))
 
-median_Length = str(sheet.cell_value(3, 2))
-median_Ratio = str(sheet.cell_value(3, 3))
+median_Length1 = str(sheet1.cell_value(4, 2))
+median_Ratio1 = str(sheet1.cell_value(4, 3))
 
-bad_Length = str(sheet.cell_value(4, 2))
-bad_Ratio = str(sheet.cell_value(4, 3))
+bad_Length1 = str(sheet1.cell_value(5, 2))
+bad_Ratio1 = str(sheet1.cell_value(5, 3))
 
 # 合格率
-pass_Percent = str(round((sheet.cell_value(2, 3) + sheet.cell_value(3, 3)), 2))
-time.sleep(0.5)
+pass_Percent1 = str(round((sheet1.cell_value(3, 3) + sheet1.cell_value(4, 3)), 2))
+
+##########################
+# 解析解释成果表-2统
+sheet2 = workbook2.sheets()[0]
+
+nrow2 = sheet2.nrows
+ncol2 = sheet2.ncols
+
+# 统计结论
+good_Length2 = str(sheet2.cell_value(3, 2))
+good_Ratio2 = str(sheet2.cell_value(3, 3))
+
+median_Length2 = str(sheet2.cell_value(4, 2))
+median_Ratio2 = str(sheet2.cell_value(4, 3))
+
+bad_Length2 = str(sheet2.cell_value(5, 2))
+bad_Ratio2 = str(sheet2.cell_value(5, 3))
+
+# 合格率
+pass_Percent2 = str(round((sheet2.cell_value(3, 3) + sheet2.cell_value(4, 3)), 2))
 print('【统计表】解析完成')
 
 # 整体评价
-if eval(pass_Percent) >= 60:
-    eval_Result = '合格'
+if eval(pass_Percent1) >= 60:
+    eval_Result1 = '合格'
 else:
-    eval_Result = '不合格'
+    eval_Result1 = '不合格'
 ################################################################################
 # 读取单层统计表
 PATH = ".\\3单层统计表"
@@ -850,7 +949,7 @@ end_Evaluation = end_Evaluation.split('--')[1]
 process_Section = ''.join([start_Evaluation, '-', end_Evaluation])
 
 ##########################
-#液面高度的获取
+# 液面高度的获取
 if gui.ccbox("请问液面高度是否和开始评价深度一致？", choices=('不一致', '一致')):
     fluid_Height = gui.enterbox(msg='请输入液面高度', title='提示')
 else:
@@ -948,10 +1047,9 @@ if eval(not_Bad_Ratio) >= 60:
     pass_or_not = '合格'
 else:
     pass_or_not = '不合格'
-##########################
 
-time.sleep(0.5)
 print('【单层统计表】解析完成')
+
 ################################################################################
 # 判断是否有储层
 PATH = ".\\4储层表\\"
@@ -986,10 +1084,8 @@ if formation_be_or_not == '有储层':
         formation_Number = str(nrow - 2)
     else:
         formation_Number = '[待确定]'
-    time.sleep(0.5)
     print('【储层表】解析完成')
 else:
-    time.sleep(0.5)
     print('未发现可供解析的储层表')
 ################################################################################
 # 储层表和单层统计表的联动数据分析
@@ -1187,9 +1283,8 @@ DICT = {
 }
 
 print('模板替换开始，请等待...')
-document_replace()#模板替换主程序
+document_replace()  # 模板替换主程序
 print('\n【模板替换】完成')
-time.sleep(0.5)
 print('储层表添加中，请等待...')
 
 ################################################################################
@@ -1277,7 +1372,7 @@ for row in range(len(table.rows)):
         table.cell(row, col).text = str(sheet.cell_value(row, col))
 
 # set_or_not = input('\n是否进行表格自动格式调整(耗时约1~3分钟)？\n【自动调整】请按【1】,【手动更改】请按【其它任意键】')
-set_or_not = gui.indexbox(msg="是否进行表格自动格式调整(耗时约1-3分钟)？",title="提示",choices=("自动调整","手动调整"))
+set_or_not = gui.indexbox(msg="是否进行表格自动格式调整(耗时约1-3分钟)？", title="提示", choices=("自动调整", "手动调整"))
 if set_or_not == 0:
     # 合并单元格
     print('\n单层统计表合并单元格并居中...')
@@ -1294,12 +1389,11 @@ if set_or_not == 0:
     # 首列居中
     for row in range(len(table.rows)):
         table.cell(row, 0).paragraphs[0].paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
-    #前两行居中
+    # 前两行居中
     for col in range(len(table.columns)):
         table.cell(0, col).merge(table.cell(1, col))
 
 print('\n【单层统计表】添加完成')
-time.sleep(0.5)
 print('正在添加储层段落，请等待...')
 ################################################################################
 # 上部井段固井质量评价表单元格居左
@@ -1556,7 +1650,7 @@ if formation_be_or_not == '有储层':
             cbl_value = '中到低'
             case_Wave_Energy = '较强到较弱'
             formation_Wave_Energy = '较弱到较强'
-        elif all_evaluation_of_formation_upper[pic_number ] in ['中到差，以差等为主', '中到差，以中等为主']:
+        elif all_evaluation_of_formation_upper[pic_number] in ['中到差，以差等为主', '中到差，以中等为主']:
             cbl_value = '中到高'
             case_Wave_Energy = '较强到强'
             formation_Wave_Energy = '较弱到弱'
@@ -1853,7 +1947,6 @@ if bad_interval_be_or_not == '有固井差':
     r.font.size = Pt(12)
 
     print('正在添加固井为差段落，请等待...')
-    time.sleep(0.5)
     # 添加固井质量差图片
     for bad_number in range(len(bad_Interval_Names)):
         bad_Name_Split = bad_Interval_Names[bad_number].split('-')
@@ -1903,20 +1996,11 @@ else:
     r.font.name = 'Times New Roman'
     r.element.rPr.rFonts.set(qn('w:eastAsia'), '宋体')
     r.font.size = Pt(12)
-time.sleep(0.5)
-################################################################################
-# 100%检查
-if round((float(good_Ratio) + float(median_Ratio) + float(bad_Ratio)), 1) != 100.0:
-    input('固井质量统计比例相加不等于100.0%，请仔细确认')
-else:
-    print('固井质量统计比例相加等于100.0%，检查完毕')
-time.sleep(0.5)
 ################################################################################
 # 签名
 PATH = '.\\resources\\签名图片\\'
-# report_Writer = input('请选择报告编写人：1李海军 2陈海祥 3朱莉 4何强 5杨艺 6涂国兰 7王昌德\n')
-choicess_list = ["李海军","陈海祥","朱莉","何强","杨艺","涂国兰","王昌德"]
-report_Writer = gui.choicebox(msg='请选择报告编写人',choices=choicess_list)
+choicess_list = ["李海军", "陈海祥", "朱莉", "何强", "杨艺", "罗文", "王昌德"]
+report_Writer = gui.choicebox(msg='请选择报告编写人', choices=choicess_list)
 add1 = document.tables[0].cell(0, 1).paragraphs[0]
 if report_Writer == '李海军':
     add1.add_run().add_picture(PATH + '签名-李海军.jpg', width=Inches(1.0))
@@ -1928,13 +2012,12 @@ elif report_Writer == '何强':
     add1.add_run().add_picture(PATH + '签名-何强.jpg', width=Inches(1.0))
 elif report_Writer == '杨艺':
     add1.add_run().add_picture(PATH + '签名-杨艺.jpg', width=Inches(1.0))
-elif report_Writer == '涂国兰':
-    add1.add_run().add_picture(PATH + '签名-涂国兰.jpg', width=Inches(1.0))
+elif report_Writer == '罗文':
+    add1.add_run().add_picture(PATH + '签名-罗文.jpg', width=Inches(1.0))
 elif report_Writer == '王昌德':
     add1.add_run().add_picture(PATH + '签名-王昌德.jpg', width=Inches(1.0))
-# report_Supervisor = input('请选择报告审核人：1刘恒 2王参文 3刘静 4朱莉\n')
-choicess_list = ["刘恒","王参文","刘静","朱莉"]
-report_Supervisor = gui.choicebox(msg='请选择报告审核人',choices=choicess_list)
+choicess_list = ["刘恒", "王参文", "刘静", "朱莉"]
+report_Supervisor = gui.choicebox(msg='请选择报告审核人', choices=choicess_list)
 add2 = document.tables[0].cell(1, 1).paragraphs[0]
 if report_Supervisor == '刘恒':
     add2.add_run().add_picture(PATH + '签名-刘恒.jpg', width=Inches(1.0))
@@ -1946,67 +2029,4 @@ elif report_Supervisor == '朱莉':
     add2.add_run().add_picture(PATH + '签名-朱莉.jpg', width=Inches(1.0))
 document.save(newFile)
 print('【报告】生成完毕')
-################################################################################
-# 生成报表
-generate_table_or_not = gui.indexbox(msg="是否生成报表？", title="提示", choices=("是的", "不用"))
-if generate_table_or_not == 0:
-    PATH = '.\\resources\\报表模板\\'
-    wb = openpyxl.load_workbook(PATH + '2020年固井质量统计表样板.xlsx')
-    sheet = wb[wb.sheetnames[0]]
-    sheet['B5'] = client_Name
-    sheet['C5'] = casing_Goal + 'x' + casing_Goal_Depth
-    sheet['D5'] = well_Name
-    sheet['E5'] = well_Type
-    sheet['F5'] = geographic_Position2
-    sheet['G5'] = deepest_bit
-    sheet['H5'] = design_Depth
-    sheet['I5'] = actual_Depth
-    sheet['J5'] = ''  # 固井单位
-    sheet['K5'] = drilling_Unit
-    sheet['L5'] = cement_End_Time
-    sheet['M5'] = process_Section
-    sheet['N5'] = '西南分公司'
-    sheet['O5'] = good_Length
-    sheet['P5'] = good_Ratio
-    sheet['Q5'] = median_Length
-    sheet['R5'] = median_Ratio
-    sheet['S5'] = bad_Length
-    sheet['T5'] = bad_Ratio
-    sheet['Y5'] = pass_Percent
-    wb.save(well_Name + '_' + year + month + \
-            day + '_(' + casing_Goal + 'mm套,' + process_Section + 'm)固井质量统计报表' + '.xlsx')
-    print('【报表】生成完毕')
-################################################################################
-# 生成归档文件夹
-def mkdir(path):
-    path = path.strip()  # 去除首位空格
-    path = path.rstrip("\\")  # 去除尾部 \ 符号
-    isExists = os.path.exists(path)
-    if not isExists:
-        os.makedirs(path)
-        os.makedirs(path + '\\bg')
-        os.makedirs(path + '\\pdf')
-        os.makedirs(path + '\\qt')
-        os.makedirs(path + '\\yssj')
-        os.makedirs(path + '\\vdl')
-        os.makedirs(path + '\\vdl\\data')
-        os.makedirs(path + '\\vdl\\map')
-        os.makedirs(path + '\\vdl\\head')
-        print(path + ' 创建成功')
-        return True
-    else:
-        print(path + ' 目录已存在')
-        return False
-generate_dir_or_not = gui.indexbox(msg="是否生成归档文件夹？", title="提示", choices=("是的", "不用"))
-if generate_dir_or_not == 0:
-    # 定义要创建的目录
-    mkpath = ".\\" + well_Name + '#GC_' + year + month + day + '(' + process_Section +')'
-    # 调用函数
-    mkdir(mkpath)
-    # 将原始表改名后添加进bg
-    PATH = ".\\1原始资料"
-    for fileName in os.listdir(PATH):
-        fileDir = PATH + "\\" + fileName
-        document = Document(fileDir)
-    document.save(mkpath + '\\bg\\' + well_Name + '井_' + year + month + day + '原始资料收集登记表.docx')
 input('按任意键退出'.center(25, '-'))
