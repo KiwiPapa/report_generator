@@ -20,46 +20,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="33b3e1c2-f6fa-4827-a851-007f495a006c" name="Default Changelist" comment="branch change">
-      <change afterPath="$PROJECT_DIR$/1原始资料/自201H2-4_20200417_原始资料收集登记表［2020版］.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2统计表/自201H2-4_VDL_20200417(10-5145)T.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/3单层统计表/自201H2-4_VDL_20200417(10-5145)L.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/4储层表/Result_New.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/5储层图/1-7#3250-3660.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/6固井差图/1-0-64.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/合并单层表test/解释成果表-1单-1.xls" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/合并单层表test/解释成果表-1单-2.xls" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/回收站/L.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/回收站/Layer.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/回收站/Layer_New.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/回收站/Result.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/回收站/Result_New.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/回收站/宁209H34-1_20200410_原始资料收集登记表［2020版］.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/回收站/宁209H34-1_VDL_20200410(0-5053)-解释成果表-1统.xls" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/回收站/宁209H34-1_VDL_20200410(0-5053)-解释成果表-2统.xls" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/小功能添加-单层评价表合并.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/极睿导出/自201H2-4_VDL_20200417(10-5145)Layer.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/极睿导出/自201H2-4_VDL_20200417(10-5145)Result.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/转换.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/report_generator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/report_generator.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/1原始资料/宁209H34-1_20200410_原始资料收集登记表［2020版］.docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2统计表/宁209H34-1_VDL_20200410(0-5053)-解释成果表-1统.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2统计表/宁209H34-1_VDL_20200410(0-5053)-解释成果表-2统.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/3单层统计表/L.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/4储层表/储层表.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/5储层图/1#3380-3510.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/5储层图/2-3#3480-3580.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/5储层图/4#4840-4920.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/6固井差图/1-1050-1260.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/6固井差图/2-1260-1460.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/6固井差图/3-1460-1620.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/6固井差图/4-1700-1760.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/单元测试-极睿导出表的处理.py" beforeDir="false" afterPath="$PROJECT_DIR$/单元测试-极睿导出表的处理.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/固井质量报告生成程序.py" beforeDir="false" afterPath="$PROJECT_DIR$/固井质量报告生成程序.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/极睿导出/Layer.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/极睿导出/Layer_New.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/极睿导出/Layer_New.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/极睿导出/Result.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/极睿导出/Result_New.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/极睿导出/Result_New.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/2统计表/自201H2-4_VDL_20200417(10-5145)T.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/3单层统计表/自201H2-4_VDL_20200417(10-5145)L.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/4储层表/Result_New.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5储层图/1-7#3250-3660.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/6固井差图/1-0-64.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/回收站/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/回收站/others/ico/ico1.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/回收站/others/ico/ico2.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/回收站/others/原始资料收集登记表(工程测井标准模板)/原始资料收集登记表(工程测井标准模板).docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/回收站/others/原始资料收集登记表(工程测井标准模板)/说明.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/回收站/others/原始资料收集登记表最新模板(2020版).docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/回收站/固井质量报告程序使用手册20200402.pptx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/回收站/程序流程图.eddx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/模板报告/template-with-formation-changning.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/模板报告/template-with-formation-weiyuan.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/模板报告/template-with-formation.docx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/模板报告/template-with-formation.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/模板报告/template-without-formation-changning.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/模板报告/template-without-formation.docx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/模板报告/template-without-formation.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/固井质量报告生成程序.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +75,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager" selected="Python.小功能添加-单层评价表合并">
+  <component name="RunManager" selected="Python.单元测试-解释成果表解析">
     <configuration name="单元测试-解释成果表解析" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="report_generator" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -285,7 +267,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.小功能添加-单层评价表合并" />
         <item itemvalue="Python.固井质量报告生成程序" />
         <item itemvalue="Python.单元测试-解释成果表解析" />
       </list>
@@ -351,6 +332,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="branch change" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1588953452644">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1588953452644" />
     <state width="1897" height="261" key="GridCell.Tab.0.bottom" timestamp="1587374494230">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
