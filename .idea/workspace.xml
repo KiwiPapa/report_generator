@@ -19,29 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="33b3e1c2-f6fa-4827-a851-007f495a006c" name="Default Changelist" comment="branch change">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/report_generator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/report_generator.iml" afterDir="false" />
+    <list default="true" id="33b3e1c2-f6fa-4827-a851-007f495a006c" name="Default Changelist" comment="LEAD version continues, layer_evaluation function created">
+      <change afterPath="$PROJECT_DIR$/自201H2-4_20200417_(139.7mm套,10.00-5053.00m)固井报告.docx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2统计表/自201H2-4_VDL_20200417(10-5145)T.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/3单层统计表/自201H2-4_VDL_20200417(10-5145)L.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/4储层表/Result_New.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/5储层图/1-7#3250-3660.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/6固井差图/1-0-64.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/回收站/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/回收站/others/ico/ico1.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/回收站/others/ico/ico2.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/回收站/others/原始资料收集登记表(工程测井标准模板)/原始资料收集登记表(工程测井标准模板).docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/回收站/others/原始资料收集登记表(工程测井标准模板)/说明.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/回收站/others/原始资料收集登记表最新模板(2020版).docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/回收站/固井质量报告程序使用手册20200402.pptx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/回收站/程序流程图.eddx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/模板报告/template-with-formation-changning.docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/模板报告/template-with-formation-weiyuan.docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/模板报告/template-with-formation.docx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/模板报告/template-with-formation.docx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/模板报告/template-without-formation-changning.docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/模板报告/template-without-formation.docx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/模板报告/template-without-formation.docx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/固井质量报告生成程序.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,9 +53,9 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.notifications" />
   </component>
-  <component name="RunManager" selected="Python.单元测试-解释成果表解析">
+  <component name="RunManager" selected="Python.报告生成程序(LEAD)">
     <configuration name="单元测试-解释成果表解析" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="report_generator" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -265,8 +245,30 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="报告生成程序(LEAD)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="report_generator" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/报告生成程序(LEAD).py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.报告生成程序(LEAD)" />
         <item itemvalue="Python.固井质量报告生成程序" />
         <item itemvalue="Python.单元测试-解释成果表解析" />
       </list>
@@ -304,7 +306,21 @@
       <option name="project" value="LOCAL" />
       <updated>1587134369781</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="some little change for LEAD version">
+      <created>1588953579644</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1588953579644</updated>
+    </task>
+    <task id="LOCAL-00005" summary="LEAD version continues">
+      <created>1588953635456</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1588953635456</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -329,52 +345,55 @@
     <MESSAGE value="For LEAD4.0 first change" />
     <MESSAGE value="For LEAD4.0 second change" />
     <MESSAGE value="branch change" />
-    <option name="LAST_COMMIT_MESSAGE" value="branch change" />
+    <MESSAGE value="继续LEAD适配，新建了层段评价函数，仍有bug" />
+    <MESSAGE value="some little change for LEAD version" />
+    <MESSAGE value="LEAD version continues" />
+    <option name="LAST_COMMIT_MESSAGE" value="LEAD version continues" />
   </component>
   <component name="WindowStateProjectService">
     <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1588953452644">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1588953452644" />
-    <state width="1897" height="261" key="GridCell.Tab.0.bottom" timestamp="1587374494230">
+    <state width="1899" height="348" key="GridCell.Tab.0.bottom" timestamp="1588957649484">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1897" height="261" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1587374494230" />
-    <state width="1897" height="261" key="GridCell.Tab.0.center" timestamp="1587374494230">
+    <state width="1899" height="348" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588957649484" />
+    <state width="1899" height="348" key="GridCell.Tab.0.center" timestamp="1588957649484">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1897" height="261" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1587374494230" />
-    <state width="1897" height="261" key="GridCell.Tab.0.left" timestamp="1587374494230">
+    <state width="1899" height="348" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588957649484" />
+    <state width="1899" height="348" key="GridCell.Tab.0.left" timestamp="1588957649484">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1897" height="261" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1587374494230" />
-    <state width="1897" height="261" key="GridCell.Tab.0.right" timestamp="1587374494230">
+    <state width="1899" height="348" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588957649484" />
+    <state width="1899" height="348" key="GridCell.Tab.0.right" timestamp="1588957649484">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1897" height="261" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1587374494230" />
-    <state width="1897" height="261" key="GridCell.Tab.1.bottom" timestamp="1587374494230">
+    <state width="1899" height="348" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588957649484" />
+    <state width="1899" height="348" key="GridCell.Tab.1.bottom" timestamp="1588957649485">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1897" height="261" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1587374494230" />
-    <state width="1897" height="261" key="GridCell.Tab.1.center" timestamp="1587374494230">
+    <state width="1899" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588957649485" />
+    <state width="1899" height="348" key="GridCell.Tab.1.center" timestamp="1588957649485">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1897" height="261" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1587374494230" />
-    <state width="1897" height="261" key="GridCell.Tab.1.left" timestamp="1587374494230">
+    <state width="1899" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588957649485" />
+    <state width="1899" height="348" key="GridCell.Tab.1.left" timestamp="1588957649485">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1897" height="261" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1587374494230" />
-    <state width="1897" height="261" key="GridCell.Tab.1.right" timestamp="1587374494230">
+    <state width="1899" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588957649485" />
+    <state width="1899" height="348" key="GridCell.Tab.1.right" timestamp="1588957649485">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1897" height="261" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1587374494230" />
-    <state x="579" y="144" key="SettingsEditor" timestamp="1587099052977">
+    <state width="1899" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588957649485" />
+    <state x="579" y="144" key="SettingsEditor" timestamp="1588954794268">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="579" y="144" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1587099052977" />
-    <state x="670" y="232" key="Vcs.Push.Dialog.v2" timestamp="1587135058705">
+    <state x="579" y="144" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1588954794268" />
+    <state x="670" y="232" key="Vcs.Push.Dialog.v2" timestamp="1588953699883">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="670" y="232" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1587135058705" />
+    <state x="670" y="232" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1588953699883" />
   </component>
 </project>
