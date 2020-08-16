@@ -133,7 +133,7 @@ def layer_evaluation1(df, start, end):
     df_temp.drop(['index'], axis=1, inplace=True)
     if x != 0:  # 防止df_temp为空时，loc报错的bug
         first_layer_start = df_temp.loc[0, '井段Start']
-    if x > 1 and first_layer_start != formation_Start:
+    if x > 0 and first_layer_start != formation_Start:
         upper = pd.DataFrame({'井 段\n (m)': ''.join([str(formation_Start), '-', str(first_layer_start)]),
                               '厚 度\n (m)': first_layer_start - formation_Start,
                               '最大声幅\n （%）': df_temp_formation_Start.loc[0, '最大声幅\n （%）'],
@@ -151,7 +151,7 @@ def layer_evaluation1(df, start, end):
         df_temp.loc[len(df_temp) - 1, '井 段\n (m)'] = ''.join([str(df_temp.loc[len(df_temp) - 1, '井段Start']), \
                                                               '-', str(df_temp.loc[len(df_temp) - 1, '井段End'])])
         df_temp.loc[len(df_temp) - 1, '厚 度\n (m)'] = df_temp.loc[len(df_temp) - 1, '重计算厚度']
-    elif x > 1 and first_layer_start == formation_Start:
+    elif x > 0 and first_layer_start == formation_Start:
         df_temp.loc[len(df_temp) - 1, '井段End'] = formation_End
         df_temp.loc[:, "重计算厚度"] = df_temp.apply(get_thickness, axis=1)
         # 修改df_temp的最末一行
@@ -215,7 +215,7 @@ def layer_evaluation1(df, start, end):
             evaluation_of_formation = '好到差，以好为主'
         elif ratio_Series['好'] <= ratio_Series['差']:
             evaluation_of_formation = '好到差，以差为主'
-    elif (80 >= ratio_Series['好'] >= 20) & (80 >= ratio_Series['差'] >= 20) & (80 >= ratio_Series['中'] >= 20):
+    elif (95 > ratio_Series['好'] > 5) & (95 > ratio_Series['差'] > 5) & (95 > ratio_Series['中'] > 5):
         evaluation_of_formation = '好到中到差'
     return ratio_Series, evaluation_of_formation
 
@@ -239,7 +239,7 @@ def layer_evaluation2(df, start, end):
     df_temp.drop(['index'], axis=1, inplace=True)
     if x != 0:  # 防止df_temp为空时，loc报错的bug
         first_layer_start = df_temp.loc[0, '井段Start']
-    if x > 1 and first_layer_start != formation_Start:
+    if x > 0 and first_layer_start != formation_Start:
         upper = pd.DataFrame({'井 段\n (m)': ''.join([str(formation_Start), '-', str(first_layer_start)]),
                               '厚 度\n (m)': first_layer_start - formation_Start,
                               '最大指数': df_temp_formation_Start.loc[0, '最大指数'],
@@ -257,7 +257,7 @@ def layer_evaluation2(df, start, end):
         df_temp.loc[len(df_temp) - 1, '井 段\n (m)'] = ''.join([str(df_temp.loc[len(df_temp) - 1, '井段Start']), \
                                                               '-', str(df_temp.loc[len(df_temp) - 1, '井段End'])])
         df_temp.loc[len(df_temp) - 1, '厚 度\n (m)'] = df_temp.loc[len(df_temp) - 1, '重计算厚度']
-    elif x > 1 and first_layer_start == formation_Start:
+    elif x > 0 and first_layer_start == formation_Start:
         df_temp.loc[len(df_temp) - 1, '井段End'] = formation_End
         df_temp.loc[:, "重计算厚度"] = df_temp.apply(get_thickness, axis=1)
         # 修改df_temp的最末一行
@@ -321,7 +321,7 @@ def layer_evaluation2(df, start, end):
             evaluation_of_formation = '好到差，以好为主'
         elif ratio_Series['好'] <= ratio_Series['差']:
             evaluation_of_formation = '好到差，以差为主'
-    elif (80 >= ratio_Series['好'] >= 20) & (80 >= ratio_Series['差'] >= 20) & (80 >= ratio_Series['中'] >= 20):
+    elif (95 > ratio_Series['好'] > 5) & (95 > ratio_Series['差'] > 5) & (95 > ratio_Series['中'] > 5):
         evaluation_of_formation = '好到中到差'
     return ratio_Series, evaluation_of_formation
 
@@ -997,7 +997,7 @@ first_BLength = str(sheet1.cell_value(5, 2))
 first_BRatio = str(sheet1.cell_value(5, 3))
 
 # 合格率
-first_Pass_Percent = str(round((sheet1.cell_value(3, 3) + sheet1.cell_value(4, 3)), 2))
+first_Pass_Percent = str(round((float(sheet1.cell_value(3, 3)) + float(sheet1.cell_value(4, 3))), 2))
 
 ##########################
 # 解析解释成果表-2统
@@ -1017,7 +1017,7 @@ second_BLength = str(sheet2.cell_value(5, 2))
 second_BRatio = str(sheet2.cell_value(5, 3))
 
 # 合格率
-second_Pass_Percent = str(round((sheet2.cell_value(3, 3) + sheet2.cell_value(4, 3)), 2))
+second_Pass_Percent = str(round((float(sheet2.cell_value(3, 3)) + float(sheet2.cell_value(4, 3))), 2))
 print('【统计表】解析完成')
 
 # 整体评价
@@ -1165,10 +1165,11 @@ if formation_be_or_not == '有储层':
     for row in range(1, rows3 + 1):
         formation_Start = df3.loc[row, '储层Start']
         formation_End = df3.loc[row, '储层End']
-        # print('----------------第', row, '个储层内的井段----------------')
+        print('----------------第', row, '个储层内的井段----------------')
         if (formation_End <= float(end_Evaluation)) & (formation_Start >= float(start_Evaluation)):
             ratio_Series1 = layer_evaluation1(df1, formation_Start, formation_End)[0] #调取一界面评价函数
             evaluation_of_formation1 = layer_evaluation1(df1, formation_Start, formation_End)[1] #调取一界面评价函数
+            print(ratio_Series1)
             all_evaluation_of_formation1.append(evaluation_of_formation1)
 
             ratio_Series2 = layer_evaluation2(df2, formation_Start, formation_End)[0]  # 调取二界面评价函数
@@ -1178,11 +1179,12 @@ if formation_be_or_not == '有储层':
         elif (formation_End > float(end_Evaluation)) & (formation_Start < float(end_Evaluation)) & (formation_Start >= float(start_Evaluation)):
             ratio_Series1 = layer_evaluation1(df1, formation_Start, float(end_Evaluation))[0]  # 调取一界面评价函数
             evaluation_of_formation1 = layer_evaluation1(df1, formation_Start, float(end_Evaluation))[1]  # 调取一界面评价函数
-
+            print(ratio_Series1)
             ratio_Series2 = layer_evaluation1(df2, formation_Start, float(end_Evaluation))[0]  # 调取二界面评价函数
             evaluation_of_formation2 = layer_evaluation1(df2, formation_Start, float(end_Evaluation))[1]  # 调取二界面评价函数
         else:
             print('储层界超出了测量范围，请检查')
+
             pass
 
 ################################################################################
@@ -1257,7 +1259,9 @@ DICT = {
 }
 
 print('模板替换开始，请等待...')
+
 document_replace()  # 模板替换主程序
+
 print('\n【模板】替换完成')
 print('储层表添加中，请等待...')
 
@@ -1343,7 +1347,7 @@ for row in range(1, len(table.rows)):
 document.save(newFile)#TODO
 
 # 合并单元格
-print('\n一界面单层统计表中格式优化中...')
+print('\n一界面单层统计表格式优化中...')
 for row in range(1, len(table.rows)):
     view_bar(row, len(table.rows) - 1)
     table.rows[row].height = Pt(20)
@@ -1412,7 +1416,6 @@ for row in range(len(table.rows)):
 document.save(newFile)#TODO
 print('\n【二界面单层统计表】添加完成')
 
-
 print('正在添加储层段落，请等待...')
 ################################################################################
 # 上部井段固井质量评价表单元格居左
@@ -1426,7 +1429,7 @@ for row in range(1, len(upper_interval_table.rows)):
 p = document.add_paragraph()
 p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
 p.paragraph_format.line_spacing = Pt(24)
-run = p.add_run(u"3.储层段固井质量分析")
+run = p.add_run(u"3．储层段固井质量分析")
 run.font.name = 'Times New Roman'  # 英文字体
 run.element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')  # 中文字体
 run.font.size = Pt(14)
@@ -1539,7 +1542,7 @@ if formation_be_or_not == '有储层':
     for row in range(1, rows4 + 1):
         formation_Start_Depth = formation_pic_DataFrame.loc[row, '当前储层图片Start'] #当前储层图片Start深度
         formation_Start = df3.loc[int(formation_pic_DataFrame.loc[row, 'formation_EndNumber']), '储层Start'] #对应的第一个储层开始深度
-        # print('----------------第', row, '个储层上部的井段----------------')
+        print('----------------第', row, '个储层上部的井段----------------')
         if (float(formation_Start) <= float(end_Evaluation)) & (float(formation_Start_Depth) >= float(start_Evaluation)):
             ratio_Series1 = layer_evaluation1(df1, float(formation_Start_Depth), float(formation_Start))[0]  # 调取一界面评价函数
             evaluation_of_formation_upper1 = layer_evaluation1(df1, float(formation_Start_Depth), float(formation_Start))[1]  # 调取一界面评价函数
@@ -1778,7 +1781,7 @@ if formation_be_or_not == '有储层':
             r.element.rPr.rFonts.set(qn('w:eastAsia'), '宋体')
             r.font.size = Pt(12)
 
-            r = p.add_run(all_evaluation_of_formation1[formation_Number_Temp - 1])
+            r = p.add_run(all_evaluation_of_formation2[formation_Number_Temp - 1])
             # r.bold = True
             r.font.name = 'Times New Roman'
             r.element.rPr.rFonts.set(qn('w:eastAsia'), '宋体')
@@ -1944,33 +1947,33 @@ else:
 ################################################################################
 # 签名
 PATH = '.\\resources\\签名图片\\'
-choicess_list = ["李海军", "陈海祥", "朱莉", "何强", "杨艺", "罗文", "王昌德"]
+choicess_list = ["李海军", "陈海祥", "杨 艺", "朱 莉", "何 强", "罗 文", "王昌德"]
 report_Writer = gui.choicebox(msg='请选择报告编写人', choices=choicess_list)
 add1 = document.tables[0].cell(0, 1).paragraphs[0]
 if report_Writer == '李海军':
     add1.add_run().add_picture(PATH + '签名-李海军.jpg', width=Inches(1.0))
 elif report_Writer == '陈海祥':
     add1.add_run().add_picture(PATH + '签名-陈海祥.jpg', width=Inches(1.0))
-elif report_Writer == '朱莉':
-    add1.add_run().add_picture(PATH + '签名-朱莉.jpg', width=Inches(1.0))
-elif report_Writer == '何强':
-    add1.add_run().add_picture(PATH + '签名-何强.jpg', width=Inches(1.0))
-elif report_Writer == '杨艺':
+elif report_Writer == '杨 艺':
     add1.add_run().add_picture(PATH + '签名-杨艺.jpg', width=Inches(1.0))
-elif report_Writer == '罗文':
+elif report_Writer == '朱 莉':
+    add1.add_run().add_picture(PATH + '签名-朱莉.jpg', width=Inches(1.0))
+elif report_Writer == '何 强':
+    add1.add_run().add_picture(PATH + '签名-何强.jpg', width=Inches(1.0))
+elif report_Writer == '罗 文':
     add1.add_run().add_picture(PATH + '签名-罗文.jpg', width=Inches(1.0))
 elif report_Writer == '王昌德':
     add1.add_run().add_picture(PATH + '签名-王昌德.jpg', width=Inches(1.0))
-choicess_list = ["刘恒", "王参文", "刘静", "朱莉"]
+choicess_list = ["刘 恒", "王参文", "刘 静", "朱 莉"]
 report_Supervisor = gui.choicebox(msg='请选择报告审核人', choices=choicess_list)
 add2 = document.tables[0].cell(1, 1).paragraphs[0]
-if report_Supervisor == '刘恒':
+if report_Supervisor == '刘 恒':
     add2.add_run().add_picture(PATH + '签名-刘恒.jpg', width=Inches(1.0))
 elif report_Supervisor == '王参文':
     add2.add_run().add_picture(PATH + '签名-王参文.jpg', width=Inches(1.0))
-elif report_Supervisor == '刘静':
+elif report_Supervisor == '刘 静':
     add2.add_run().add_picture(PATH + '签名-刘静.jpg', width=Inches(1.0))
-elif report_Supervisor == '朱莉':
+elif report_Supervisor == '朱 莉':
     add2.add_run().add_picture(PATH + '签名-朱莉.jpg', width=Inches(1.0))
 document.save(newFile)
 print('【报告】生成完毕')

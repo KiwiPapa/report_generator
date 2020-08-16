@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/report_generator.iml" filepath="$PROJECT_DIR$/.idea/report_generator.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../tables_add_together/.idea/tables_add_together.iml" filepath="$PROJECT_DIR$/../tables_add_together/.idea/tables_add_together.iml" />
     </modules>
   </component>
 </project>
